@@ -1,10 +1,12 @@
-<header class="navbar navbar-fixed-top navbar-inverse">
+<header class="navbar navbar-fixed-top navbar-inverse"
+        style="background-color:#FF6600;">
+  
   <div class="container">
-    <%= link_to "HackerNewsClone", '#', id: "logo" %>
+    <%= link_to "HackerNewsClone", '/' , id: "logo" %>
     <nav>
       <ul class="nav navbar-nav navbar-left">
-        <li><a href="#">News</a></li>
-        <li><a href="#">Submit</a></li>
+        <li><%= link_to "news",    newest_path %></li>
+        <li><%= link_to "submit",    submit_path %></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
 

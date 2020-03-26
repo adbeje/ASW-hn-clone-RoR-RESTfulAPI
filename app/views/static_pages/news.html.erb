@@ -1,13 +1,10 @@
 <% provide(:title, "News") %>
 <div class="center jumbotron">
-  <h1>Bienvenido a HackerNewsClone</h1>
-
   <h2>
     Esto es un intento de clon de la pàgina web
     <a href="https://news.ycombinator.com/news">Hacker News</a>.
   </h2>
-
-  <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
+  <%= link_to "Sign up now!", "#", class: "btn btn-lg btn-primary" %>
 </div>
 
 <%= link_to image_tag("rails.png", alt: "Rails logo"),

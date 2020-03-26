@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
-  get 'static_pages/news'
-  resources :microposts
-  resources :users
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  root 'static_pages#news'
-  get  '/signup',  to: 'users#new'
+  resources :contribucions do
+    member do
+		  put 'point'
+	  end
+	end
+  root 'contribucions#index'
+  get  '/newest',    to: 'contribucions#index_ordered'
+  get  '/submit',    to: 'contribucions#new'
 end
