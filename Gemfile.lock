@@ -99,6 +99,8 @@ GEM
     ffi (1.12.2-java)
     ffi (1.12.2-x64-mingw32)
     ffi (1.12.2-x86-mingw32)
+    figaro (1.1.1)
+      thor (~> 0.14)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     hashie (4.1.0)
@@ -239,7 +241,7 @@ GEM
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
     sqlite3 (1.4.1)
-    thor (1.0.1)
+    thor (0.20.3)
     thread_safe (0.3.6)
     thread_safe (0.3.6-java)
     tilt (2.0.10)
@@ -287,6 +289,7 @@ DEPENDENCIES
   byebug (= 11.0.1)
   capybara (= 3.28.0)
   devise
+  figaro
   jbuilder (= 2.9.1)
   listen (= 3.1.5)
   minitest-reporters (= 1.3.8)

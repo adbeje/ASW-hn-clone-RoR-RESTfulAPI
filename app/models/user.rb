@@ -21,4 +21,14 @@ class User < ApplicationRecord
       user.image = auth.info.image # assuming the user model has an image
     end
   end
+  
+  def password_required?
+    if respond_to?(:reset_password_token)
+      return true if reset_password_token.present?
+    end
+    return true if new_record?
+    password.present? || password_confirmation.present?
+  end
+
+  
 end

@@ -11,6 +11,7 @@ gem 'jbuilder',           '2.9.1'
 gem 'bootsnap',           '1.4.5', require: false
 gem 'devise'
 gem 'omniauth-facebook'
+gem 'figaro'
 
 group :development, :test do
   gem 'sqlite3', '1.4.1'

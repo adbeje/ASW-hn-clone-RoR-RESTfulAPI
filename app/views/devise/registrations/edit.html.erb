@@ -1,8 +1,20 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<header class="navbar navbar-fixed-top navbar-inverse"
+        style="background-color:#FF6600;">
+  <div class="container">
+    <%= link_to "Edit Profile", '#', id: "logo" %>
+  </div>
+</header>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
+  <img src= <%= :image?%>, width="50" , height="50"> </img>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
+  </div>
+  
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
