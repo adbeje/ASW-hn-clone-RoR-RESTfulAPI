@@ -1,6 +1,5 @@
 class StaticPagesController < ApplicationController
   def news
-    render "contribucions"
   end
   
   def newest
