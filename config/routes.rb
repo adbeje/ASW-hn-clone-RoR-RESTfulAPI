@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :comments 
   resources :contribucions do
     member do
 		  put 'point'
@@ -7,4 +8,6 @@ Rails.application.routes.draw do
   root 'contribucions#index'
   get  '/newest',    to: 'contribucions#index_ordered'
   get  '/submit',    to: 'contribucions#new'
+  get  '/comments', to: 'comments#index'
+  get '/commentss', to: 'comments#new'
 end

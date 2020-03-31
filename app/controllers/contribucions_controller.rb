@@ -38,6 +38,18 @@ class ContribucionsController < ApplicationController
   # GET /contribucions/1/edit
   def edit
   end
+  
+  def comment
+    #if !current_user().nil?
+      @user_id = current_user().id
+      @contribucion = Contribucion.find(params[:id])
+      @comment = @contribucion.comments.create(content: params[:content], user_id: @user_id)
+      flash[:notice] = "Added your comment"
+      redirect_to :action => "show", :id => params[:id]
+    #else
+      #redirect_to '/login'
+    #end
+  end
 
   # POST /contribucions
   # POST /contribucions.json
