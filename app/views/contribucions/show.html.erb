@@ -18,3 +18,22 @@
 <%= link_to "Add Comment", new_comment_path(contribucion_id: @contribucion.id) %>
 <%= link_to 'Edit', edit_contribucion_path(@contribucion) %> |
 <%= link_to 'Back', contribucions_path %>
+
+  <div style="margin-top: 10px;">
+    <% for comment in @contribucion.comments %>
+    <div>
+    <small>
+         ▲
+        <%= time_ago_in_words(comment.created_at) %> ago </small> </div>
+        <div class="pad-comment">
+          <%= comment.content %>
+        </div>
+        <div><small>
+          <div class="pad-comment">
+          <%= link_to 'Reply', comment %></small>
+        </div></div>
+        
+    <% end %>
+  </div>
+  
+</p>
