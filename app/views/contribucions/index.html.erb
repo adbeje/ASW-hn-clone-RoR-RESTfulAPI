@@ -7,32 +7,33 @@
   <tbody>
     
     <% @contribucions.each do |contribucion| %>
-    <% x+=1 %>
-    <% uri = URI.parse(contribucion.url) %>
-      <tr>
-        <tr class="athing">
-        <td class="title" valign="top" align="right"><span class="rank"><%= x %><a>.</a></span></td>  
-        <td class="title"><%= link_to '▲', point_contribucion_path(contribucion), method: :put %><a href= <%= contribucion.url %> class="storylink"><%=contribucion.title%></a><span class="sitebit comhead"> (<a href=<%= uri.host %>><span class="sitestr"> <%= uri.host %> </span></a>)</span></td>
-      </tr>
-      <tr>
-        <td colspan="1"></td>
-        <% t = (Time.now - contribucion.created_at) %>
-        <td class ="subtext"> <span class="Points"> <%= contribucion.points %> </span>  created on  <a class="subtext">
-          <% if (t > 86400) %>
-            <a><%= (t / 86400).round %> days ago</a>
-          <% elsif (t > 3600) %>
-            <a><%= (t / 3600).round %> hours ago</a>
-          <% else %>
-            <a><%= (t / 60).round %> minutes ago</a>
-          <% end %>
-          |
-        <a><%= link_to 'show', contribucion %></a>
-        |
-        <a><%= link_to 'edit', edit_contribucion_path(contribucion) %></a>
-        |
-        <a><%= link_to 'delete', contribucion, method: :delete, data: { confirm: 'Are you sure?' } %></a>
-        </td>
-      </tr>
+    
+        <% x+=1 %>
+        <% uri = URI.parse(contribucion.url) %>
+          <tr>
+            <tr class="athing">
+            <td class="title" valign="top" align="right"><span class="rank"><%= x %><a>.</a></span></td>  
+            <td class="title"><%= link_to '▲', point_contribucion_path(contribucion), method: :put %><a href= <%= contribucion.url %> class="storylink"><%=contribucion.title%></a><span class="sitebit comhead"> (<a href=<%= uri.host %>><span class="sitestr"> <%= uri.host %> </span></a>)</span></td>
+          </tr>
+          <tr>
+            <td colspan="1"></td>
+            <% t = (Time.now - contribucion.created_at) %>
+            <td class ="subtext"> <span class="Points"> <%= contribucion.points %> </span>  created on  <a class="subtext">
+              <% if (t > 86400) %>
+                <a><%= (t / 86400).round %> days ago</a>
+              <% elsif (t > 3600) %>
+                <a><%= (t / 3600).round %> hours ago</a>
+              <% else %>
+                <a><%= (t / 60).round %> minutes ago</a>
+              <% end %>
+              |
+            <a><%= link_to 'show', contribucion %></a>
+            |
+            <a><%= link_to 'edit', edit_contribucion_path(contribucion) %></a>
+            |
+            <a><%= link_to 'delete', contribucion, method: :delete, data: { confirm: 'Are you sure?' } %></a>
+            </td>
+          </tr>
     <% end %>
   </tbody>
 </table>
