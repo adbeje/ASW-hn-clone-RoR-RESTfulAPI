@@ -14,7 +14,7 @@ class CommentsController < ApplicationController
 
   # GET /comments/new
   def new
-    @comment = Comment.new
+    @comment = Comment.new(contribucion_id: params[:contribucion_id])
   end
 
   # GET /comments/1/edit
@@ -54,18 +54,6 @@ class CommentsController < ApplicationController
       end
     end
   end
-  
-  # GET /comments/threads
-  def threads
-    if params[:user_pk]
-      @comments = Comment.where(user_id: params[:user_pk])
-      #@replies = Reply.where(user_id: params[:user_pk])
-
-    else
-      @comments = Comment.where(user_id: current_user().id)
-      #@replies = Reply.where(user_id: current_user().id)
-    end
-  end
 
   # DELETE /comments/1
   # DELETE /comments/1.json
@@ -74,26 +62,6 @@ class CommentsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to comments_url, notice: 'Comment was successfully destroyed.' }
       format.json { head :no_content }
-    end
-  end
-  
-  def upvote
-    if !current_user.nil?
-      @comment = Comment.find(params[:id])
-      @comment.upvote_by current_user
-      redirect_to :back
-    #else
-      #redirect_to '/login'
-    end
-  end
-
-  def downvote
-    if !current_user.nil?
-      @comment = Comment.find(params[:id])
-      @comment.downvote_by current_user
-      redirect_to :back
-     #else
-      #redirect_to '/login'
     end
   end
 
@@ -105,6 +73,6 @@ class CommentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def comment_params
-      params.require(:comment).permit(:submission_id, :user_id, :content)
+      params.require(:comment).permit(:contribucion_id, :user_id, :content)
     end
 end

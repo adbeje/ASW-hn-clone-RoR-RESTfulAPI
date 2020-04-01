@@ -7,13 +7,12 @@
     <% else %>
         <% @comments.reverse_order.each do |comment| %>
             <div>
-              <small><%= link_to like_comment_path (comment), method: :put do %>
+              <small><%= link_to comment_path (comment), method: :put do %>
                     ▲
-                <% end %> <a href="/users/<%= comment.user_id %>"> <%= getUser(comment.user_id).username %></a>
+                <% end %> <a href="/users/<%= comment.user_id %>"> </a>
                 <%= time_ago_in_words(comment.created_at) %>
-                |<a href="/submissions/<%= comment.submission_id %>">
-                topic |
-              </a> <%= comment.get_upvotes.size%> votes
+                |<a href="/contribucions/<%= comment.contribucion_id %>">
+              </a> 
               </small>
             </div>
             <div>

@@ -1,5 +1,7 @@
 class Contribucion < ApplicationRecord
   
+  has_many :comments
+  
   validate :verificar
   
   def verificar

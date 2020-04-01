@@ -15,5 +15,6 @@
   <%= @contribucion.text %>
 </p>
 
+<%= link_to "Add Comment", new_comment_path(contribucion_id: @contribucion.id) %>
 <%= link_to 'Edit', edit_contribucion_path(@contribucion) %> |
 <%= link_to 'Back', contribucions_path %>

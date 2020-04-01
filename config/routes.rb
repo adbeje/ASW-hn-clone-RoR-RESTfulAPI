@@ -9,5 +9,4 @@ Rails.application.routes.draw do
   get  '/newest',    to: 'contribucions#index_ordered'
   get  '/submit',    to: 'contribucions#new'
   get  '/comments', to: 'comments#index'
-  get '/commentss', to: 'comments#new'
 end
