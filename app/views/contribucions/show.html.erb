@@ -20,7 +20,7 @@
 <%= link_to 'Back', contribucions_path %>
 
   <div style="margin-top: 10px;">
-    <% for comment in @contribucion.comments %>
+    <% @contribucion.comments.reverse.each do | comment | %>
     <div>
     <small>
          ▲
