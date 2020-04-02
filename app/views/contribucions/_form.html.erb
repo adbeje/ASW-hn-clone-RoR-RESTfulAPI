@@ -13,20 +13,24 @@
 
   <div class="field">
     <%= form.label :title %>
-    <%= form.text_area :title %>
+    <%= form.text_field :title, size: "50x10" %>
   </div>
 
   <div class="field">
     <%= form.label :url %>
-    <%= form.text_area :url %>
+    <%= form.url_field :url, size: "50x10" %>
   </div>
 
+  <tr><td></td><td><b>or</b></td></tr>
+  
   <div class="field">
     <%= form.label :text %>
-    <%= form.text_area :text %>
+    <%= form.text_area :text, size: "50x10" %>
   </div>
 
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
+
+<%= link_to "Back", :back %>

@@ -5,7 +5,11 @@
     <%= link_to "HackerNewsClone", '/' , id: "logo" %>
     <nav>
       <ul class="nav navbar-nav navbar-left">
-        <li><%= link_to "news",    newest_path %></li>
+        <% if current_page?("/newest") %>
+          <li><%= link_to "news",    newest_path, class: 'link-to-text-color'%></li>
+        <% else %>
+          <li><%= link_to "news",    newest_path %></li>
+        <% end %>
         <li><%= link_to "submit",    submit_path %></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">

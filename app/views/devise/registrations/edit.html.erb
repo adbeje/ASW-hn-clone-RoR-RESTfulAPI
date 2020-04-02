@@ -1,47 +1,18 @@
-<header class="navbar navbar-fixed-top navbar-inverse"
-        style="background-color:#FF6600;">
-  <div class="container">
-    <%= link_to "Edit Profile", '#', id: "logo" %>
-  </div>
-</header>
-
+<title>Profile: <%= @user.name %> | HackerNewsClone</title>
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
-  <img src= <%= :image?%>, width="50" , height="50"> </img>
-
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+<table border="0">
+    <tr class='athing'><td valign="top">user:</td><td><%= f.text_field :name, autofocus: true, autocomplete: "name", size: "60x10"  %></td></tr>
+    <tr><td valign="top">created:</td><td><%= time_ago_in_words( @user.created_at) %> ago.</td></tr>
+    <tr><td valign="top">karma:</td><td>No esta implementado</td></tr>
+    <tr><td valign="top">about:</td><td><%= f.text_area :about, autocomplete: "about", size: "60x10" %></td></tr>
+    <tr><td valign="top">email:</td><td><%= f.email_field :email, autofocus: true, autocomplete: "email", size:"60x10"%></td></tr>
+</table>
 
   <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
     <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
   <% end %>
-
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
-    <% end %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
-  </div>
 
   <div class="actions">
     <%= f.submit "Update" %>
@@ -53,3 +24,4 @@
 <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
 
 <%= link_to "Back", :back %>
+    
