@@ -1,5 +1,5 @@
 class Contribucion < ApplicationRecord
-  
+  has_one :user
   has_many :comments
   
   validate :verificar
