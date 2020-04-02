@@ -10,6 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2020_03_30_161323) do
 
   create_table "contribucions", force: :cascade do |t|
@@ -36,6 +37,29 @@ ActiveRecord::Schema.define(version: 2020_03_30_161323) do
     t.text "about"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+=======
+ActiveRecord::Schema.define(version: 2020_04_02_141231) do
+
+  create_table "comments", force: :cascade do |t|
+    t.integer "user_id"
+    t.text "content"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "contribucion_id"
+    t.text "title"
+    t.index ["contribucion_id"], name: "index_comments_on_contribucion_id"
+    t.index ["title"], name: "index_comments_on_title"
+  end
+
+  create_table "contribucions", force: :cascade do |t|
+    t.text "title"
+    t.text "url"
+    t.text "text"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "points", default: 0
+    t.string "tipus"
+>>>>>>> comments
   end
 
 end
