@@ -27,6 +27,8 @@
     <%= form.label :text %>
     <%= form.text_area :text, size: "50x10" %>
   </div>
+  
+  <% form.text_field :user_id%>
 
   <div class="actions">
     <%= form.submit %>
@@ -34,3 +36,4 @@
 <% end %>
 
 <%= link_to "Back", :back %>
+

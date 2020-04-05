@@ -2,7 +2,7 @@
 <%= link_to "current_user_show", current_user %> -->
 
 <tr id="pagespace" title="Profile: velmu" style="height:10px"></tr><tr><td>
-  <table border="0">
+  <table id="hnmain" border="0" cellpadding="0" cellspacing="0" width="85%" bgcolor="#f6f6ef">
     <tr class='athing'><td valign="top">user:</td><td><%= @user.name %></td></tr>
     <tr><td valign="top">created:</td><td><%= time_ago_in_words( @user.created_at) %> ago.</td></tr>
     <tr><td valign="top">karma:</td><td> Aun no existe esto </td></tr>

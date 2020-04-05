@@ -1,5 +1,5 @@
 <p id="notice"><%= notice %></p>
-
+<table id="hnmain" border="0" cellpadding="0" cellspacing="0" width="85%" bgcolor="#f6f6ef">
 <p>
   <strong>Title:</strong>
   <%= @contribucion.title %>
@@ -13,6 +13,11 @@
 <p>
   <strong>Text:</strong>
   <%= @contribucion.text %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @contribucion.user_id %>
 </p>
 
 <%= link_to "Add Comment", new_comment_path(contribucion_id: @contribucion.id) %>
@@ -35,5 +40,5 @@
         
     <% end %>
   </div>
-  
+</table>
 </p>
