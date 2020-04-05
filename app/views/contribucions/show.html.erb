@@ -17,10 +17,10 @@
 
 <p>
   <strong>User:</strong>
-  <%= @contribucion.user_id %>
+  <%= link_to @contribucion.user.name, "/users/" + (@contribucion.user).id.to_s %>
 </p>
 
-<%= link_to "Add Comment", new_comment_path(contribucion_id: @contribucion.id) %>
+<%= link_to "Add Comment", new_comment_path(contribucion_id: @contribucion.id) %> |
 <%= link_to 'Edit', edit_contribucion_path(@contribucion) %> |
 <%= link_to 'Back', contribucions_path %>
 
@@ -29,7 +29,9 @@
     <div>
     <small>
          ▲
-        <%= time_ago_in_words(comment.created_at) %> ago </small> </div>
+        <%= link_to comment.user.name, "/users/" + (comment.user).id.to_s %> 
+        <%= time_ago_in_words(comment.created_at) %> ago 
+        [-]</small> </div>
         <div class="commtext c00">
           <%= comment.content %>
         </div>

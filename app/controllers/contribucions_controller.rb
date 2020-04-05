@@ -55,6 +55,7 @@ class ContribucionsController < ApplicationController
   # POST /contribucions.json
   def create
     @contribucion = Contribucion.new(contribucion_params)
+    @contribucion.user = current_user
     
     if @contribucion.url.empty?
       @contribucion.tipus = 'ask'
