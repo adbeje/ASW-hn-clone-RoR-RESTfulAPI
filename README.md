@@ -1,24 +1,14 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Components del grup:
 
-Things you may want to cover:
+* Daniel Clemente
 
-* Ruby version
+* Álvaro Trius
 
-* System dependencies
+* Oriol Catalán
 
-* Configuration
+* Adrià Ventura
 
-* Database creation
+Deployment (herokuapp): https://glacial-island-05388.herokuapp.com
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
