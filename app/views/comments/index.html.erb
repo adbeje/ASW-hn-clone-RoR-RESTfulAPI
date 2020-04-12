@@ -1,25 +1,26 @@
 <p id="notice"><%= notice %></p>
   <ol class="inline gap">
-    <h3>Comments</h3>
-
     <% if @comments.empty? %>
         <p>There are no comments yet</p>
     <% else %>
         <% @comments.reverse_order.each do |comment| %>
-            <div>
-              <small><%= link_to comment_path (comment), method: :put do %>
-                    ▲
-                <% end %> <a href="/users/<%= comment.user_id %>"> </a>
-                <%= time_ago_in_words(comment.created_at) %>
-                |<a href="/contribucions/<%= comment.contribucion_id %>">
-              </a> 
-              </small>
-            </div>
-            <div>
-              <div class="pad-comment">
-                <%= comment.content %>
+              <div>
+                <small><%= link_to comment_path (comment), method: :put do %>
+                      ▲
+                  <% end %> 
+                  by <a href="/user?id=<%= comment.user_id %>"> <%= comment.user.name %> </a>
+                  <%= time_ago_in_words(comment.created_at) %> ago |
+                  <a href="/contribucions/<%= comment.contribucion_id %>"> parent </a> |
+                  <a href="/comments/<%= comment.id %>/edit"> edit </a> |
+                  <a><%= link_to 'delete', comment, method: :delete, data: { confirm: 'Are you sure?' } %></a> | on:
+                  <a href="/contribucions/<%= comment.contribucion_id %>"> <%= comment.contribucion.title %></a>
+                </small>
               </div>
-            </div>
+              <div>
+                <div class="pad-comment">
+                  <%= comment.content %>
+                </div>
+              </div>
         <% end %>
     <%end%>
   </ol>

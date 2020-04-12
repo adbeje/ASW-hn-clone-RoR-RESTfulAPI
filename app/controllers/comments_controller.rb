@@ -4,7 +4,11 @@ class CommentsController < ApplicationController
   # GET /comments
   # GET /comments.json
   def index
-    @comments = Comment.all
+    if params[:user_id]
+      @comments = Comment.where(user_id: params[:user_id])
+    else
+      @comments = Comment.where(user_id: current_user().id)
+    end
   end
 
   # GET /comments/1
@@ -40,10 +44,6 @@ class CommentsController < ApplicationController
   # PATCH/PUT /comments/1
   # PATCH/PUT /comments/1.json
   def update
-    if params[:user][:password].blank?
-      params[:user].delete(:password)
-      params[:user].delete(:password_confirmation)
-    end
     respond_to do |format|
       if @comment.update(comment_params)
         format.html { redirect_to @comment, notice: 'Comment was successfully updated.' }

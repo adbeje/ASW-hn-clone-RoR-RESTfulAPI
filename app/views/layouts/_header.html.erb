@@ -3,22 +3,22 @@
         size="17px">
   
   <div class="container">
-    <%= link_to "HackerNewsClone", '/' , id: "logo" %>
+    <%= link_to "HackerNewsClone", root_path , id: "logo" %>
     <nav>
       <ul class="nav navbar-nav navbar-left">
-        <% if current_page?("/newest") %>
-          <li><%= link_to "news",    newest_path, class: 'link-to-text-color'%></li>
-        <% else %>
-          <li><%= link_to "news",    newest_path %></li>
+        <li><%= link_to "news",    newest_path %></li>
+        <li><%= link_to "ask",    ask_path %></li>
+        <% if current_user %>
+          <li><%= link_to "threads",    thread_path %></li>
         <% end %>
-        <li><%= link_to "submit",    submit_path %></li>
+          <li><%= link_to "submit",    submit_path %></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
 
         <% unless current_user %>
             <li><%= link_to "Sign in with Facebook", user_facebook_omniauth_authorize_path %></li>
             <% else %>
-            <li><%= link_to "Edit Profile", "/users/edit" %></li> 
+            <li><%= link_to current_user.name, "/users/edit" %></li> 
             <li><%= link_to "Logout", destroy_user_session_path, method: :delete %></li>
         <% end %>
       </ul>

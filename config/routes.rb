@@ -15,8 +15,10 @@ Rails.application.routes.draw do
 	  end
 	end
   root 'contribucions#index'
-  get  '/newest',         to: 'contribucions#index_ordered'
-  get  '/submit',         to: 'contribucions#new'
-  get  '/user/id',        to: 'users#show'
-  get  '/comments',       to: 'comments#index'
+  get  '/newest',             to: 'contribucions#index_ordered'
+  get  '/ask',                to: 'contribucions#index_ask'
+  get  '/submit',             to: 'contribucions#new'
+  get  '/user',               to: 'users#show'
+  get  '/thread',             to: 'comments#index'
+  get  '/submissions',        to: 'contribucions#index_ordered'
 end

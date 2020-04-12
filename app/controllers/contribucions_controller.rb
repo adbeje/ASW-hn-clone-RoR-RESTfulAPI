@@ -3,8 +3,18 @@ class ContribucionsController < ApplicationController
 
   # GET /contribucions
   # GET /contribucions.json
-  def index_ordered
+  def index_ask
     @contribucions = Contribucion.all.order("created_at DESC")
+  end
+
+  # GET /contribucions
+  # GET /contribucions.json
+  def index_ordered
+      if params[:user_id]
+         @contribucions = Contribucion.where(user_id: current_user().id)
+      else
+         @contribucions = Contribucion.all.order("created_at DESC")
+    end
   end
   
   # GET /contribucions
