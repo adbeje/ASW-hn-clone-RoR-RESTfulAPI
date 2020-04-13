@@ -6,12 +6,35 @@
     <%= link_to "HackerNewsClone", root_path , id: "logo" %>
     <nav>
       <ul class="nav navbar-nav navbar-left">
-        <li><%= link_to "news",    newest_path %></li>
-        <li><%= link_to "ask",    ask_path %></li>
-        <% if current_user %>
-          <li><%= link_to "threads",    thread_path %></li>
-        <% end %>
-          <li><%= link_to "submit",    submit_path %></li>
+        <% if URI(request.url).path == newest_path %>
+          <li><%= link_to "news",       newest_path, id: "sublogoD" %></li>
+          <li><%= link_to "ask",        ask_path, id: "sublogo"  %></li>
+          <% if current_user %>
+            <li><%= link_to "threads",    thread_path, id: "sublogo"  %></li>
+          <% end %>
+          <li><%= link_to "submit",   submit_path, id: "sublogo"  %></li>
+        <% elsif URI(request.url).path == ask_path %>
+          <li><%= link_to "news",       newest_path, id: "sublogo" %></li>
+          <li><%= link_to "ask",        ask_path, id: "sublogoD"  %></li>
+          <% if current_user %>
+            <li><%= link_to "threads",    thread_path, id: "sublogo"  %></li>
+          <% end %>
+          <li><%= link_to "submit",   submit_path, id: "sublogo"  %></li>
+        <% elsif URI(request.url).path == thread_path %>
+          <li><%= link_to "news",       newest_path, id: "sublogo" %></li>
+          <li><%= link_to "ask",        ask_path, id: "sublogo"  %></li>
+          <% if current_user %>
+            <li><%= link_to "threads",    thread_path, id: "sublogoD"  %></li>
+          <% end %>
+          <li><%= link_to "submit",   submit_path, id: "sublogo"  %></li>
+        <% else %>
+          <li><%= link_to "news",       newest_path, id: "sublogo" %></li>
+          <li><%= link_to "ask",        ask_path, id: "sublogo"  %></li>
+          <% if current_user %>
+          <li><%= link_to "threads",    thread_path, id: "sublogo"  %></li>
+          <% end %>
+            <li><%= link_to "submit",   submit_path, id: "sublogo"  %></li>
+        <%end%>
       </ul>
       <ul class="nav navbar-nav navbar-right">
 

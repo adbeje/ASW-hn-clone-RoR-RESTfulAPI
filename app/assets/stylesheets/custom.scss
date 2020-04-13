@@ -70,6 +70,32 @@ p {
   }
 }
 
+#sublogo {
+  float: left;
+  margin-right: 10px;
+  font-size: 1.4em;
+  color: white;
+  letter-spacing: -1px;
+  padding-top: 9px;
+  &:hover {
+    background-size: 100% 2px;
+    color: $gray-light;
+  }
+}
+
+#sublogoD {
+  float: left;
+  margin-right: 10px;
+  font-size: 1.4em;
+  color: $gray-light;
+  letter-spacing: -1px;
+  padding-top: 9px;
+  &:hover {
+    background-size: 100% 2px;
+    color: $gray-light;
+  }
+}
+
 
 
 /* footer */
