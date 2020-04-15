@@ -9,12 +9,21 @@ class CommentsController < ApplicationController
     else
       @comments = Comment.where(user_id: current_user().id)
     end
+    @replies = Reply.all
   end
 
   # GET /comments/1
   # GET /comments/1.json
   def show
   end
+
+def reply
+        @comment = Comment.find(params[:id])
+        @user_id = current_user().id
+        @reply = @comment.replies.create(content:params[:content],user_id:@user_id, comment:@comment)
+        flash[:notice] = "Added your reply"
+        redirect_to :action => "show", :id => params[:id]
+end
 
   # GET /comments/new
   def new
@@ -30,6 +39,7 @@ class CommentsController < ApplicationController
   def create
     @comment = Comment.new(comment_params)
     @comment.user = current_user
+    
     respond_to do |format|
       if @comment.save
         format.html { redirect_to @comment, notice: 'Comment was successfully created.' }
@@ -52,6 +62,18 @@ class CommentsController < ApplicationController
         format.html { render :edit }
         format.json { render json: @comment.errors, status: :unprocessable_entity }
       end
+    end
+  end
+  
+  # GET /comments/threads
+  def threads
+    if params[:user_pk]
+      @comments = Comment.where(user_id: params[:user_pk])
+      @replies = Reply.where(user_id: params[:user_pk])
+
+    else
+      @comments = Comment.where(user_id: current_user().id)
+      @replies = Reply.where(user_id: current_user().id)
     end
   end
 

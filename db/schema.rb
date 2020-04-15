@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_02_155958) do
+ActiveRecord::Schema.define(version: 2020_04_12_140449) do
 
   create_table "comments", force: :cascade do |t|
     t.integer "user_id"
@@ -34,6 +34,16 @@ ActiveRecord::Schema.define(version: 2020_04_02_155958) do
     t.string "tipus"
     t.integer "user_id"
     t.index ["user_id"], name: "index_contribucions_on_user_id"
+  end
+
+  create_table "replies", force: :cascade do |t|
+    t.text "content"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "user_id"
+    t.integer "comment_id"
+    t.index ["comment_id"], name: "index_replies_on_comment_id"
+    t.index ["user_id"], name: "index_replies_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

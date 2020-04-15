@@ -3,11 +3,15 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks", registrations: "users/registrations" }
   resources :users, :only => [:show]
   
-  resources :comments 
+  resources :replies
 
-  resources :contribucions do
-    resources :comments
-  end 
+  resources :submissions do
+     post 'comment', on: :member
+   end
+
+ resources :comments do
+     post 'reply', on: :member
+  end
   
   resources :contribucions do
     member do

@@ -14,7 +14,7 @@ class ContribucionsController < ApplicationController
          @contribucions = Contribucion.where(user_id: current_user().id)
       else
          @contribucions = Contribucion.all.order("created_at DESC")
-    end
+      end 
   end
   
   # GET /contribucions
