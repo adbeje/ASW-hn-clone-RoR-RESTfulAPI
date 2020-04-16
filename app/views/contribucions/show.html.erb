@@ -4,8 +4,9 @@
   <% uri = URI.parse(@contribucion.url) %>
     <% if  (current_user != nil) && (current_user.liked? @contribucion) %>&nbsp;&nbsp;
     <% else %><%= link_to '▲', like_contribucion_path(@contribucion.id), method: :get%><% end %>
-            <% if @contribucion.tipus == "ask" %>
+        <% if @contribucion.tipus == "ask" %>
           <a  href="/contribucions/<%= @contribucion.id %>" class="storylink"><%=@contribucion.title%></a>
+          <tr><td></td>&nbsp;&nbsp;&nbsp;<%= @contribucion.text %></tr>
         <% else %>
             <a href= <%= @contribucion.url %> class="storylink"><%=@contribucion.title%></a>
             <span class="sitebit comhead"> (<a href=<%= "https://"+ uri.host %>><span class="sitestr"> <%= uri.host %> </span></a>)</span></td>
