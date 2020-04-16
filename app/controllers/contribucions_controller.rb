@@ -1,5 +1,5 @@
 class ContribucionsController < ApplicationController
-  before_action :set_contribucion, only: [:show, :edit, :update, :destroy, :like, :unlike, :comment, :point]
+  before_action :set_contribucion, only: [:show, :edit, :update, :destroy, :like, :unlike, :comment]
 
   # GET /contribucions
   # GET /contribucions.json
@@ -25,7 +25,7 @@ class ContribucionsController < ApplicationController
   # GET /contribucions
   # GET /contribucions.json
   def index
-    @contribucions = Contribucion.all.order("points DESC")
+    @contribucions = Contribucion.all.order(cached_votes_up: :desc)
   end
 
   # GET /contribucions/1
@@ -109,9 +109,6 @@ class ContribucionsController < ApplicationController
       @contribucion.liked_by current_user
       @contribucion.user.karma += 1
       @contribucion.user.save
-      @contribucion.points += 1
-      @contribucion.save
-      puts @contribucion.points
       respond_to do |format|
         format.html {redirect_to request.referrer}
         format.json { head :no_content  }
@@ -125,9 +122,6 @@ class ContribucionsController < ApplicationController
     @contribucion.unliked_by current_user
     @contribucion.user.karma -= 1
     @contribucion.user.save
-    @contribucion.points -= 1
-    @contribucion.save
-    puts @contribucion.points
     respond_to do |format|
       format.html {redirect_to request.referrer}
       format.json { head :no_content  }
