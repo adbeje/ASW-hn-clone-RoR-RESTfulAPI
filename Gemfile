@@ -12,6 +12,7 @@ gem 'bootsnap',           '1.4.5', require: false
 gem 'devise'
 gem 'omniauth-facebook'
 gem 'figaro'
+gem 'acts_as_votable'
 
 group :development, :test do
   gem 'sqlite3', '1.4.1'

@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  before_action :set_comment, only: [:show, :edit, :update, :destroy]
+  before_action :set_comment, only: [:show, :edit, :update, :destroy, :like, :unlike]
 
   # GET /comments
   # GET /comments.json
@@ -9,6 +9,10 @@ class CommentsController < ApplicationController
     else
       @comments = Comment.where(user_id: current_user().id)
     end
+  end
+  
+  def index_upvoted
+    @comments = current_user.get_up_voted Comment
   end
 
   # GET /comments/1
@@ -64,6 +68,28 @@ class CommentsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def like
+    @comment.liked_by current_user
+    @comment.user.karma += 1
+    @comment.user.save
+    respond_to do |format|
+      format.html {redirect_to request.referrer}
+      format.json { head :no_content  }
+    end
+  end
+   
+  def unlike
+    @comment.unliked_by current_user
+    @comment.user.karma -= 1
+    @comment.user.save
+    respond_to do |format|
+      format.html {redirect_to request.referrer}
+      format.json { head :no_content  }
+    end
+  end
+    
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

@@ -2,12 +2,10 @@
   <table id="hnmain" border="0" cellpadding="0" cellspacing="0" width="85%" bgcolor="#f6f6ef">
     <tr class='athing'><td valign="top">user: <%= @user.name %></td></tr>
     <tr><td valign="top">created: <%= time_ago_in_words( @user.created_at) %> ago.</td></tr>
-    <tr><td valign="top">karma: Aun no existe esto </td></tr>
+    <tr><td valign="top">karma: <%= @user.karma %></td></tr>
     <tr><td valign="top">about: <%= @user.about %></td></tr>
     <tr><td valign="top"><a href= "/submissions?user_id=<%=@user.id%>" > <u>submissions</u></a></td></tr>
     <tr><td valign="top"><a href= "/thread?user_id=<%=@user.id%>" > <u>comments</u></a></td></tr>
-      <tr><td valign="top"><a href= " # "> <u>Upvoted submissions</u></a></td></tr>
-    <tr><td valign="top"><a href= " # " > <u> Upvoted comments</u></a></td></tr>
   </table>
 <br><br>
 </td></tr>

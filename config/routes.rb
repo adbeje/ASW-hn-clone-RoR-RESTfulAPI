@@ -8,17 +8,28 @@ Rails.application.routes.draw do
   resources :contribucions do
     resources :comments
   end 
-  
+
   resources :contribucions do
     member do
-		  put 'point'
-	  end
-	end
+      get "like"
+      get "unlike"
+    end
+  end
+  
+  resources :comments do
+    member do
+      get "like"
+      get "unlike"
+    end
+  end
+  
   root 'contribucions#index'
   get  '/newest',             to: 'contribucions#index_ordered'
   get  '/ask',                to: 'contribucions#index_ask'
   get  '/submit',             to: 'contribucions#new'
   get  '/user',               to: 'users#show'
   get  '/thread',             to: 'comments#index'
+  get  '/upvotedsubmissions', to: 'contribucions#index_upvoted'
+  get  '/upvotedcomments',    to: 'comments#index_upvoted'
   get  '/submissions',        to: 'contribucions#index_ordered'
 end

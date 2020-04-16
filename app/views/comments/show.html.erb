@@ -1,10 +1,9 @@
 <p id="notice"><%= notice %></p>
 
-
-    <div><small> <%= link_to comment_path(@comment), method: :put do %>
+<div><small> <%= link_to comment_path(@comment), method: :put do %>
           ▲
-      <% end %>
-      about <%= time_ago_in_words(@comment.created_at) %> | </small> </div>
+<% end %>
+about <%= time_ago_in_words(@comment.created_at) %> | </small> </div>
 
 <p>
   <strong>Contribucion:</strong>

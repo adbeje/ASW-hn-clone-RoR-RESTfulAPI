@@ -13,22 +13,31 @@
         <% x+=1 %>
           <tr>
             <tr class="athing">
-            <td class="title" valign="top" align="right"><span class="rank"><%= x %><a>.</a></span></td>  
-            <td class="title"><%= link_to '▲', point_contribucion_path(contribucion), method: :put %>
-            <a  href="/contribucions/<%= contribucion.id %>" class="storylink"><%=contribucion.title%></a>
+            <td class="title" valign="top" align="right"><span class="rank"><%= x %><a>.</a></span></td> 
+            <td class="title"> 
+              <% if (current_user != nil) && (current_user.liked? contribucion) %>&nbsp;&nbsp;
+              <% else %><%= link_to '▲', like_contribucion_path(contribucion.id), method: :get%><% end %>
+              <a  href="/contribucions/<%= contribucion.id %>" class="storylink"><%=contribucion.title%></a>
+            </td>
           </tr>
           <tr>
             <td colspan="1"></td>
             <td class ="subtext"> 
-              <span class="Points"> <%= contribucion.points %> points </span> by
+            <span class="Points"> <%= contribucion.get_upvotes.size - contribucion.get_downvotes.size %> points </span> by
               <a> <%= link_to contribucion.user.name, "user?id=" + (contribucion.user_id).to_s %></a>
               <a> <%= time_ago_in_words( contribucion.created_at) %> ago</a>
-              |
-              <a><%= link_to 'show', contribucion %></a>
-              |
-              <a><%= link_to 'edit', edit_contribucion_path(contribucion) %></a>
-              |
-              <a><%= link_to 'delete', contribucion, method: :delete, data: { confirm: 'Are you sure?' } %></a>
+                <% if (current_user != nil) && (current_user.liked? contribucion) %>
+                |
+                <%= link_to 'unlike', unlike_contribucion_path(contribucion.id), method: :get%>
+                <%end%>
+                <% if (current_user != nil) && (current_user == contribucion.user) %>
+                |
+                <a><%= link_to 'edit', edit_contribucion_path(contribucion) %></a>
+                |
+                <a><%= link_to 'delete', contribucion, method: :delete, data: { confirm: 'Are you sure?' } %></a>
+                <% end %>
+                |
+                <a href= "/contribucions/<%= contribucion.id %>" class="storylink"><%= contribucion.comments.size %> comments</a>
             </td>
           </tr>
     <% else %>

@@ -2,6 +2,7 @@ class Contribucion < ApplicationRecord
   belongs_to :user
   default_scope -> { order(created_at: :desc) }
   has_many :comments
+  acts_as_votable
   
   validate :verificar
   

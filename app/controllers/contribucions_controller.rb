@@ -1,5 +1,5 @@
 class ContribucionsController < ApplicationController
-  before_action :set_contribucion, only: [:show, :edit, :update, :destroy, :point]
+  before_action :set_contribucion, only: [:show, :edit, :update, :destroy, :like, :unlike]
 
   # GET /contribucions
   # GET /contribucions.json
@@ -11,10 +11,14 @@ class ContribucionsController < ApplicationController
   # GET /contribucions.json
   def index_ordered
       if params[:user_id]
-         @contribucions = Contribucion.where(user_id: current_user().id)
+         @contribucions = Contribucion.where(user_id: params[:user_id])
       else
          @contribucions = Contribucion.all.order("created_at DESC")
-    end
+      end
+  end
+  
+  def index_upvoted
+    @contribucions = current_user.get_up_voted Contribucion
   end
   
   # GET /contribucions
@@ -31,18 +35,6 @@ class ContribucionsController < ApplicationController
   # GET /contribucions/new
   def new
     @contribucion = Contribucion.new
-  end
-  
-  ## PUT /contribucions/:id/like
-  def point
-	  @contribucion.points = @contribucion.points + 1
-	  puts @contribucion.points
-	  @contribucion.save 
-    puts @contribucion.points
-    respond_to do |format|
-      format.html { redirect_to request.referrer }
-      format.json { head :no_content  }
-    end
   end
 
   # GET /contribucions/1/edit
@@ -107,7 +99,27 @@ class ContribucionsController < ApplicationController
       format.json { head :no_content }
     end
   end
-
+  
+  def like
+    @contribucion.liked_by current_user
+    @contribucion.user.karma += 1
+    @contribucion.user.save
+    respond_to do |format|
+      format.html {redirect_to request.referrer}
+      format.json { head :no_content  }
+    end
+  end
+   
+  def unlike
+    @contribucion.unliked_by current_user
+    @contribucion.user.karma -= 1
+    @contribucion.user.save
+    respond_to do |format|
+      format.html {redirect_to request.referrer}
+      format.json { head :no_content  }
+    end
+  end
+    
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_contribucion

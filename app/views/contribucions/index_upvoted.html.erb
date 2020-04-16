@@ -13,7 +13,7 @@
         <tr class="athing">
         <td class="title" valign="top" align="right"><span class="rank"><%= x %><a>.</a></span></td>
           <td class="title"> 
-            <% if (current_user != nil) && (current_user.liked? contribucion) %>&nbsp;&nbsp;
+            <% if current_user.liked? contribucion %>&nbsp;&nbsp;
             <% else %><%= link_to '▲', like_contribucion_path(contribucion.id), method: :get%><% end %>
         <% if contribucion.tipus == "ask" %>
           <a  href="/contribucions/<%= contribucion.id %>" class="storylink"><%=contribucion.title%></a>
@@ -29,11 +29,11 @@
         <span class="Points"> <%= contribucion.get_upvotes.size - contribucion.get_downvotes.size %> points </span> by
           <a> <%= link_to contribucion.user.name, "user?id=" + (contribucion.user_id).to_s %></a>
           <a> <%= time_ago_in_words( contribucion.created_at) %> ago</a>
-          <% if (current_user != nil) && (current_user.liked? contribucion) %>
+          <% if current_user.liked? contribucion %>
                 |
           <%= link_to 'unlike', unlike_contribucion_path(contribucion.id), method: :get%>
           <%end%>
-          <% if (current_user != nil) && (current_user == contribucion.user) %>
+          <% if current_user == contribucion.user %>
           |
           <a><%= link_to 'edit', edit_contribucion_path(contribucion) %></a>
           |

@@ -6,42 +6,55 @@
     <%= link_to "HackerNewsClone", root_path , id: "logo" %>
     <nav>
       <ul class="nav navbar-nav navbar-left">
-        <% if URI(request.url).path == newest_path %>
-          <li><%= link_to "news",       newest_path, id: "sublogoD" %></li>
-          <li><%= link_to "ask",        ask_path, id: "sublogo"  %></li>
-          <% if current_user %>
-            <li><%= link_to "threads",    thread_path, id: "sublogo"  %></li>
+          <% if URI(request.url).path == newest_path %>
+            <li><%= link_to "news", newest_path, id: "sublogoD" %></li>
+          <%else%>
+            <li><%= link_to "news", newest_path, id: "sublogo" %></li>
+          <%end%>
+          
+          <% if URI(request.url).path == ask_path %>
+            <li><%= link_to "ask", ask_path, id: "sublogoD" %></li>
+          <%else%>
+            <li><%= link_to "ask", ask_path, id: "sublogo" %></li>
+          <%end%>
+          
+          <% if current_user %> 
+            <% if (URI(request.url).path == thread_path) && (URI(request.url).query == nil) %>
+              <li><%= link_to "thread", thread_path, id: "sublogoD" %></li>
+            <%else%>
+              <li><%= link_to "thread", thread_path, id: "sublogo" %></li>
+            <%end%>
           <% end %>
-          <li><%= link_to "submit",   submit_path, id: "sublogo"  %></li>
-        <% elsif URI(request.url).path == ask_path %>
-          <li><%= link_to "news",       newest_path, id: "sublogo" %></li>
-          <li><%= link_to "ask",        ask_path, id: "sublogoD"  %></li>
-          <% if current_user %>
-            <li><%= link_to "threads",    thread_path, id: "sublogo"  %></li>
-          <% end %>
-          <li><%= link_to "submit",   submit_path, id: "sublogo"  %></li>
-        <% elsif URI(request.url).path == thread_path %>
-          <li><%= link_to "news",       newest_path, id: "sublogo" %></li>
-          <li><%= link_to "ask",        ask_path, id: "sublogo"  %></li>
-          <% if current_user %>
-            <li><%= link_to "threads",    thread_path, id: "sublogoD"  %></li>
-          <% end %>
-          <li><%= link_to "submit",   submit_path, id: "sublogo"  %></li>
-        <% else %>
-          <li><%= link_to "news",       newest_path, id: "sublogo" %></li>
-          <li><%= link_to "ask",        ask_path, id: "sublogo"  %></li>
-          <% if current_user %>
-          <li><%= link_to "threads",    thread_path, id: "sublogo"  %></li>
-          <% end %>
-            <li><%= link_to "submit",   submit_path, id: "sublogo"  %></li>
-        <%end%>
+          
+          <% if URI(request.url).path == submit_path %>
+            <li><%= link_to "submit", submit_path, id: "sublogoD" %></li>
+          <%else%>
+            <li><%= link_to "submit", submit_path, id: "sublogo" %></li>
+          <%end%>
+          
+          <% if URI(request.url).path == upvotedsubmissions_path %>
+            <li><%= link_to "upvoted submissions",upvotedsubmissions_path, id: "sublogoD" %></li>
+          <%end%>
+          
+          <% if URI(request.url).path == upvotedcomments_path %>
+            <li><%= link_to "upvoted comments", upvotedcomments_path,id: "sublogoD" %></li>
+          <%end%>
+          
+          <% if URI(request.url).path == submissions_path %>
+            <%@user = User.find(params[:user_id])%>
+            <li><%=link_to @user.name + "'s submissions" , request.url ,id: "sublogoD" %></li><%end%>
+            
+          <% if (URI(request.url).path == thread_path) && (URI(request.url).query != nil)%>
+            <%@user = User.find(params[:user_id])%>
+            <li><%= link_to @user.name + "'s comments", request.url , id: "sublogoD" %></li>
+          <%end%>
       </ul>
       <ul class="nav navbar-nav navbar-right">
 
         <% unless current_user %>
             <li><%= link_to "Sign in with Facebook", user_facebook_omniauth_authorize_path %></li>
             <% else %>
-            <li><%= link_to current_user.name, "/users/edit" %></li> 
+            <li><a href= "/users/edit" class="storylink"><%= current_user.name %>(<%= current_user.karma %>)</a></li>
             <li><%= link_to "Logout", destroy_user_session_path, method: :delete %></li>
         <% end %>
       </ul>
