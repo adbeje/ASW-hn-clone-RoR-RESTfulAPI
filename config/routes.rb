@@ -2,18 +2,13 @@ Rails.application.routes.draw do
   
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks", registrations: "users/registrations" }
   resources :users, :only => [:show]
-  
-  resources :comments 
-
-  resources :contribucions do
-    resources :comments
-  end 
 
   resources :contribucions do
     member do
       get "like"
       get "unlike"
     end
+    resources :comments
   end
   
   resources :comments do
@@ -21,7 +16,16 @@ Rails.application.routes.draw do
       get "like"
       get "unlike"
     end
-  end
+	  resources :replies
+	end
+	
+	resources :replies do
+    member do
+      get "like"
+      get "unlike"
+    end
+	end
+
   
   root 'contribucions#index'
   get  '/newest',             to: 'contribucions#index_ordered'

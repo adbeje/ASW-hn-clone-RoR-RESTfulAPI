@@ -36,6 +36,16 @@ ActiveRecord::Schema.define(version: 2020_04_13_215459) do
     t.index ["user_id"], name: "index_contribucions_on_user_id"
   end
 
+  create_table "replies", force: :cascade do |t|
+    t.text "content"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "user_id"
+    t.integer "comment_id"
+    t.index ["comment_id"], name: "index_replies_on_comment_id"
+    t.index ["user_id"], name: "index_replies_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false

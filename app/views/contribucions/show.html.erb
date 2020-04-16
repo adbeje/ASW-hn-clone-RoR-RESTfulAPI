@@ -46,6 +46,22 @@
       <div class="pad-comment">
         <%= link_to 'Reply', comment %></small>
       </div></div>
+       <% comment.replies.reverse.each do | reply | %>
+          <div><small> &nbsp;&nbsp;&nbsp;&nbsp;
+            <% if (current_user != nil) && (current_user.liked? reply) %> <% else %> <%= link_to '▲', like_reply_path(reply.id), method: :get%> <% end %>
+            <span class="Points"> <%= reply.get_upvotes.size - reply.get_downvotes.size %> points </span>
+            <%= link_to reply.user.name, "/users/" + (reply.user).id.to_s %> 
+            <%= time_ago_in_words(reply.created_at) %> ago 
+            <% if (current_user != nil) && (current_user.liked? reply) %>
+            <%= link_to 'unlike', unlike_reply_path(reply.id), method: :get%>
+            <%end%>
+            <span class="Points">  points </span>
+            <%= link_to reply.user.name, "/users/" + (reply.user).id.to_s %> 
+          </small> </div>
+          <div class="commtext c00">
+            &nbsp;&nbsp;&nbsp;&nbsp;<%= reply.content %>
+          </div>
+      <%end%>
       <br></br>
         
     <% end %>

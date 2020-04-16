@@ -20,5 +20,18 @@ about <%= time_ago_in_words(@comment.created_at) %> | </small> </div>
   <%= @comment.content %>
 </p>
 
+<div><small>
+      <%= link_to 'Reply', new_reply_path(comment_id: @comment.id) %></small></div>
+
+<% for reply in @comment.replies %>
+        <div class="reply">
+          <div><small><%= link_to reply_path (reply) do %>
+                ▲
+            <% end %>
+            by <a href="/user?id=<%= reply.user_id %>"> <%= reply.user.name %> </a> about <%= time_ago_in_words(reply.created_at) %> </small> </div>
+          <%= reply.content %>
+        </div>
+    <% end %>
+
 <%= link_to 'Edit', edit_comment_path(@comment) %> |
 <%= link_to 'Back', @comment.contribucion %>
