@@ -33,11 +33,11 @@
           <%end%>
           
           <% if URI(request.url).path == upvotedsubmissions_path %>
-            <li><%= link_to "upvoted submissions",upvotedsubmissions_path, id: "sublogoD" %></li>
+            <li><%= link_to "upvoted",upvotedsubmissions_path, id: "sublogoD" %></li>
           <%end%>
           
           <% if URI(request.url).path == upvotedcomments_path %>
-            <li><%= link_to "upvoted comments", upvotedcomments_path,id: "sublogoD" %></li>
+            <li><%= link_to "upvoted", upvotedcomments_path,id: "sublogoD" %></li>
           <%end%>
           
           <% if URI(request.url).path == submissions_path %>

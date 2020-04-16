@@ -6,14 +6,16 @@ class CommentsController < ApplicationController
   def index
     if params[:user_id]
       @comments = Comment.where(user_id: params[:user_id])
+      @replies = Reply.where(user_id: params[:user_id])
     else
       @comments = Comment.where(user_id: current_user().id)
+      @replies = Reply.where(user_id: current_user().id)
     end
-    @replies = Reply.all
   end
   
   def index_upvoted
     @comments = current_user.get_up_voted Comment
+    @replies = current_user.get_up_voted Reply
   end
 
   # GET /comments/1
