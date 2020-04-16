@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_13_215459) do
+ActiveRecord::Schema.define(version: 2020_04_16_190039) do
 
   create_table "comments", force: :cascade do |t|
     t.integer "user_id"
@@ -33,6 +33,12 @@ ActiveRecord::Schema.define(version: 2020_04_13_215459) do
     t.integer "points", default: 0
     t.string "tipus"
     t.integer "user_id"
+    t.integer "cached_votes_total", default: 0
+    t.integer "cached_votes_up", default: 0
+    t.integer "cached_votes_down", default: 0
+    t.index ["cached_votes_down"], name: "index_contribucions_on_cached_votes_down"
+    t.index ["cached_votes_total"], name: "index_contribucions_on_cached_votes_total"
+    t.index ["cached_votes_up"], name: "index_contribucions_on_cached_votes_up"
     t.index ["user_id"], name: "index_contribucions_on_user_id"
   end
 

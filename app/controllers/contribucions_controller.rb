@@ -12,6 +12,7 @@ class ContribucionsController < ApplicationController
   def index_ordered
       if params[:user_id]
          @contribucions = Contribucion.where(user_id: params[:user_id])
+         @replies = Reply.where(user_id: params[:user_id])
       else
          @contribucions = Contribucion.all.order("created_at DESC")
       end
@@ -24,7 +25,7 @@ class ContribucionsController < ApplicationController
   # GET /contribucions
   # GET /contribucions.json
   def index
-    @contribucions = Contribucion.all.order("points DESC")
+    @contribucions = Contribucion.all.order(cached_votes_up: :desc)
   end
 
   # GET /contribucions/1
