@@ -33,7 +33,9 @@
 
 <div><small>
   <%= link_to 'Reply', new_reply_path(comment_id: @comment.id) %>
-  </small></div>
+  |
+  <%= link_to 'Back', @comment.contribucion %>
+</small></div>
       
 <div></div>
 <b>Replies:</b>
