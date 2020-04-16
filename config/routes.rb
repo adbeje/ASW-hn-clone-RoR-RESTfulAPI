@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       get "like"
       get "unlike"
     end
+    post 'comment', on: :member
     resources :comments
   end
   

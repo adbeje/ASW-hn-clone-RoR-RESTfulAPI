@@ -1,37 +1,60 @@
 <p id="notice"><%= notice %></p>
 
-<div><small> <%= link_to comment_path(@comment), method: :put do %>
-          ▲
-<% end %>
-about <%= time_ago_in_words(@comment.created_at) %> | </small> </div>
-
-<p>
-  <strong>Contribucion:</strong>
-  <%= @comment.contribucion.title %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @comment.user.name %>
-</p>
-
-<p>
-  <strong>Content:</strong>
-  <%= @comment.content %>
-</p>
+<div>
+  <small>
+    <% if (current_user != nil) && (current_user.liked? @comment) %> 
+    <% else %> <%= link_to '▲', like_comment_path(@comment.id), method: :get%> <% end %>
+    <% if (current_user != nil) && (current_user == @comment.user)%>
+      <a> <%= link_to @comment.user.name, edit_user_registration_path %></a>
+    <%else%>
+      <a> <%= link_to @comment.user.name, "user?id=" + (@comment.user_id).to_s %></a>
+    <%end%>
+    <%= time_ago_in_words(@comment.created_at) %> ago
+    <% if (current_user != nil) && (current_user.liked? @comment) %>
+      |
+      <%= link_to 'unlike', unlike_comment_path(@comment.id), method: :get%>
+    <%end%>
+    |
+    <a href="/contribucions/<%= @comment.contribucion_id %>"> parent </a> 
+    |
+    <a href="/comments/<%= @comment.id %>/edit"> edit </a> 
+    |
+    <a><%= link_to 'delete', @comment, method: :delete, data: { confirm: 'Are you sure?' } %></a> 
+    | on:
+    <a href="/contribucions/<%= @comment.contribucion_id %>"> <%= @comment.contribucion.title %></a>
+  </small>
+</div>
+<div>
+  <div class="pad-comment">
+    <%= @comment.content %>
+    <br></br>
+  </div>
+</div>
 
 <div><small>
-      <%= link_to 'Reply', new_reply_path(comment_id: @comment.id) %></small></div>
+  <%= link_to 'Reply', new_reply_path(comment_id: @comment.id) %>
+  </small></div>
+      
+<div></div>
+<b>Replies:</b>
 
-<% for reply in @comment.replies %>
+<% @comment.replies.reverse.each do | reply | %>
         <div class="reply">
-          <div><small><%= link_to reply_path (reply) do %>
-                ▲
+          <div><small> &nbsp;&nbsp;&nbsp;&nbsp;
+            <%= link_to reply_path (reply) do %>
+            <% if (current_user != nil) && (current_user.liked? reply) %> <% else %> <%= link_to '▲', like_reply_path(reply.id), method: :get%> <% end %>
             <% end %>
-            by <a href="/user?id=<%= reply.user_id %>"> <%= reply.user.name %> </a> about <%= time_ago_in_words(reply.created_at) %> </small> </div>
-          <%= reply.content %>
+            <% if (current_user != nil) && (current_user == reply.user)%>
+              <a> <%= link_to reply.user.name, edit_user_registration_path %></a>
+            <%else%>
+              <a> <%= link_to reply.user.name, "user?id=" + (reply.user_id).to_s %></a>
+            <%end%> 
+            </a> <%= time_ago_in_words(reply.created_at) %> 
+            <% if (current_user != nil) && (current_user.liked? reply) %>
+            |
+            <%= link_to 'unlike', unlike_reply_path(reply.id), method: :get%>
+            <%end%>
+            </small> </div>
+           &nbsp;&nbsp;&nbsp;&nbsp;<%= reply.content %>
         </div>
-    <% end %>
-
-<%= link_to 'Edit', edit_comment_path(@comment) %> |
-<%= link_to 'Back', @comment.contribucion %>
+<% end %>

@@ -8,7 +8,12 @@
                 <small>
                   <% if (current_user != nil) && (current_user.liked? comment) %> 
                   <% else %> <%= link_to '▲', like_comment_path(comment.id), method: :get%> <% end %>
-                  by <a href="/user?id=<%= comment.user_id %>"> <%= comment.user.name %> </a>
+                  by                   
+                  <% if (current_user != nil) && (current_user == comment.user)%>
+                    <a> <%= link_to comment.user.name, edit_user_registration_path %></a>
+                  <%else%>
+                    <a> <%= link_to comment.user.name, "user?id=" + (comment.user_id).to_s %></a>
+                  <%end%>
                   <%= time_ago_in_words(comment.created_at) %> ago
                   <% if (current_user != nil) && (current_user.liked? comment) %>
                     |

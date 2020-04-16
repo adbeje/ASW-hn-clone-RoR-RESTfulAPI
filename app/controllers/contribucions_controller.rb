@@ -1,5 +1,5 @@
 class ContribucionsController < ApplicationController
-  before_action :set_contribucion, only: [:show, :edit, :update, :destroy, :like, :unlike]
+  before_action :set_contribucion, only: [:show, :edit, :update, :destroy, :like, :unlike, :comment]
 
   # GET /contribucions
   # GET /contribucions.json
@@ -42,37 +42,40 @@ class ContribucionsController < ApplicationController
   end
   
   def comment
-    #if !current_user().nil?
+    if !current_user().nil?
       @user_id = current_user().id
       @contribucion = Contribucion.find(params[:id])
       @comment = @contribucion.comments.create(content: params[:content], user_id: @user_id)
       flash[:notice] = "Added your comment"
       redirect_to :action => "show", :id => params[:id]
-    #else
-      #redirect_to '/login'
-    #end
+    else
+      redirect_to '/login'
+    end
   end
 
   # POST /contribucions
   # POST /contribucions.json
   def create
-    @contribucion = Contribucion.new(contribucion_params)
-    @contribucion.user = current_user
-    
-    if @contribucion.url.empty?
-      @contribucion.tipus = 'ask'
-    else 
-      @contribucion.tipus = 'url'
-    end
-
-    respond_to do |format|
-      if @contribucion.save
-        format.html { redirect_to '/newest', notice: 'Contribucion was successfully created.' }
-        format.json { render :show, status: :created, location: @contribucion }
-      else
-        format.html { render :new }
-        format.json { render json: @contribucion.errors, status: :unprocessable_entity }
+    if !current_user().nil?
+      @contribucion = Contribucion.new(contribucion_params)
+      @contribucion.user = current_user
+      if @contribucion.url.empty?
+        @contribucion.tipus = 'ask'
+      else 
+        @contribucion.tipus = 'url'
       end
+  
+      respond_to do |format|
+        if @contribucion.save
+          format.html { redirect_to '/newest', notice: 'Contribucion was successfully created.' }
+          format.json { render :show, status: :created, location: @contribucion }
+        else
+          format.html { render :new }
+          format.json { render json: @contribucion.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      redirect_to user_facebook_omniauth_authorize_path
     end
   end
 
@@ -101,12 +104,16 @@ class ContribucionsController < ApplicationController
   end
   
   def like
-    @contribucion.liked_by current_user
-    @contribucion.user.karma += 1
-    @contribucion.user.save
-    respond_to do |format|
-      format.html {redirect_to request.referrer}
-      format.json { head :no_content  }
+    if !current_user().nil?
+      @contribucion.liked_by current_user
+      @contribucion.user.karma += 1
+      @contribucion.user.save
+      respond_to do |format|
+        format.html {redirect_to request.referrer}
+        format.json { head :no_content  }
+      end
+    else
+      redirect_to user_facebook_omniauth_authorize_path
     end
   end
    

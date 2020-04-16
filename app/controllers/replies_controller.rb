@@ -24,16 +24,20 @@ class RepliesController < ApplicationController
   # POST /replies
   # POST /replies.json
   def create
-    @reply = Reply.new(reply_params)
-    @reply.user = current_user
-    respond_to do |format|
-      if @reply.save
-        format.html { redirect_to @reply, notice: 'Reply was successfully created.' }
-        format.json { render :show, status: :created, location: @reply }
-      else
-        format.html { render :new }
-        format.json { render json: @reply.errors, status: :unprocessable_entity }
+    if !current_user().nil?
+      @reply = Reply.new(reply_params)
+      @reply.user = current_user
+      respond_to do |format|
+        if @reply.save
+          format.html { redirect_to @reply.comment, notice: 'Reply was successfully created.' }
+          format.json { render :show, status: :created, location: @reply.comment }
+        else
+          format.html { render :new }
+          format.json { render json: @reply.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      redirect_to user_facebook_omniauth_authorize_path
     end
   end
 
@@ -61,13 +65,17 @@ class RepliesController < ApplicationController
     end
   end
   
-    def like
-    @reply.liked_by current_user
-    @reply.user.karma += 1
-    @reply.user.save
-    respond_to do |format|
-      format.html {redirect_to request.referrer}
-      format.json { head :no_content  }
+  def like
+    if !current_user().nil?
+      @reply.liked_by current_user
+      @reply.user.karma += 1
+      @reply.user.save
+      respond_to do |format|
+        format.html {redirect_to request.referrer}
+        format.json { head :no_content  }
+      end
+    else
+      redirect_to user_facebook_omniauth_authorize_path
     end
   end
    

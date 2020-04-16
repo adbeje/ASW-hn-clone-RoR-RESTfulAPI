@@ -27,8 +27,11 @@
         <td colspan="1"></td>
         <td class ="subtext"> 
         <span class="Points"> <%= contribucion.get_upvotes.size - contribucion.get_downvotes.size %> points </span> by
-          <a> <%= link_to contribucion.user.name, "user?id=" + (contribucion.user_id).to_s %></a>
-          <a> <%= time_ago_in_words( contribucion.created_at) %> ago</a>
+          <% if (current_user != nil) && (current_user == contribucion.user)%>
+                <a> <%= link_to contribucion.user.name, edit_user_registration_path %></a>
+              <%else%>
+                <a> <%= link_to contribucion.user.name, "user?id=" + (contribucion.user_id).to_s %></a>
+              <%end%>
           <% if current_user.liked? contribucion %>
                 |
           <%= link_to 'unlike', unlike_contribucion_path(contribucion.id), method: :get%>
@@ -40,7 +43,11 @@
           <a><%= link_to 'delete', contribucion, method: :delete, data: { confirm: 'Are you sure?' } %></a>
           <% end %>
           |
-          <a href= "/contribucions/<%= contribucion.id %>" class="storylink"><%= contribucion.comments.size %> comments</a>
+          <% if (contribucion.comments.size > 0) %>
+            <a href= "/contribucions/<%= contribucion.id %>" class="storylink"><%= contribucion.comments.size%> comments</a>
+          <% else %>
+            <a href= "/contribucions/<%= contribucion.id %>" class="storylink"> discuss</a>
+          <% end %>
         </td>
       </tr>
     <% end %>

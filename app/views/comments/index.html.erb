@@ -9,7 +9,12 @@
                 <small>
                   <% if (current_user != nil) && (current_user.liked? comment) %> 
                   <% else %> <%= link_to '▲', like_comment_path(comment.id), method: :get%> <% end %>
-                  by <a href="/user?id=<%= comment.user_id %>"> <%= comment.user.name %> </a>
+                  by 
+                  <% if (current_user != nil) && (current_user == comment.user)%>
+                    <a> <%= link_to comment.user.name, edit_user_registration_path %></a>
+                  <%else%>
+                    <a> <%= link_to comment.user.name, "user?id=" + (comment.user_id).to_s %></a>
+                  <%end%>
                   <%= time_ago_in_words(comment.created_at) %> ago
                   <% if (current_user != nil) && (current_user.liked? comment) %>
                     |
@@ -44,15 +49,24 @@
         <% @replies.reverse_order.each do |reply| %>
             <div>
               <small><%= link_to reply_path (reply) do %>
-                    ▲
-                <% end %> 
-                by <a href="/user?id=<%= reply.user_id %>"> <%= reply.user.name %> </a>
-                <%= time_ago_in_words(reply.created_at) %> ago |
+              <% if (current_user != nil) && (current_user.liked? reply) %> <% else %> <%= link_to '▲', like_reply_path(reply.id), method: :get%> <% end %>
+              <% end %>
+              <% if (current_user != nil) && (current_user == reply.user)%>
+                <a> <%= link_to reply.user.name, edit_user_registration_path %></a>
+              <%else%>
+                <a> <%= link_to reply.user.name, "user?id=" + (reply.user_id).to_s %></a>
+              <%end%> 
+              </a> <%= time_ago_in_words(reply.created_at) %> 
+              <% if (current_user != nil) && (current_user.liked? reply) %>
+              |
+              <%= link_to 'unlike', unlike_reply_path(reply.id), method: :get%>
+              <%end%>
               </small>
             </div>
             <div>
               <div class="pad-comment">
                 <%= reply.content %>
+                <br></br>
               </div>
             </div>
         <% end %>

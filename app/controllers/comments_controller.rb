@@ -41,17 +41,21 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.json
   def create
-    @comment = Comment.new(comment_params)
-    @comment.user = current_user
-    
-    respond_to do |format|
-      if @comment.save
-        format.html { redirect_to @comment, notice: 'Comment was successfully created.' }
-        format.json { render :show, status: :created, location: @comment }
-      else
-        format.html { render :new }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
+    if !current_user().nil?
+      @comment = Comment.new(comment_params)
+      @comment.user = current_user
+      
+      respond_to do |format|
+        if @comment.save
+          format.html { redirect_to @comment.contribucion, notice: 'Comment was successfully created.' }
+          format.json { render :show, status: :created, location: @comment.contribucion }
+        else
+          format.html { render :new }
+          format.json { render json: @comment.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      redirect_to user_facebook_omniauth_authorize_path
     end
   end
 
@@ -92,12 +96,16 @@ class CommentsController < ApplicationController
   end
 
   def like
-    @comment.liked_by current_user
-    @comment.user.karma += 1
-    @comment.user.save
-    respond_to do |format|
-      format.html {redirect_to request.referrer}
-      format.json { head :no_content  }
+    if !current_user().nil?
+      @comment.liked_by current_user
+      @comment.user.karma += 1
+      @comment.user.save
+      respond_to do |format|
+        format.html {redirect_to request.referrer}
+        format.json { head :no_content  }
+      end
+    else
+      redirect_to user_facebook_omniauth_authorize_path
     end
   end
    
