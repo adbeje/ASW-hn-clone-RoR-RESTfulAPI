@@ -17,7 +17,7 @@
   </div>
 
   <div class="actions">
-    <%= form.hidden_field :comment_id %>
+    <%= form.hidden_field :comment_id, :value => params[:comment_id] %>
     <%= form.submit %>
   </div>
 <% end %>

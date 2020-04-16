@@ -17,13 +17,13 @@ class CommentsController < ApplicationController
   def show
   end
 
-def reply
-        @comment = Comment.find(params[:id])
-        @user_id = current_user().id
-        @reply = @comment.replies.create(content:params[:content],user_id:@user_id, comment:@comment)
-        flash[:notice] = "Added your reply"
-        redirect_to :action => "show", :id => params[:id]
-end
+  def reply
+    @comment = Comment.find(params[:id])
+    @user_id = current_user().id
+    @reply = @comment.replies.create(content:params[:content],user_id:@user_id, comment:@comment)
+    flash[:notice] = "Added your reply"
+    redirect_to :action => "show", :id => params[:id]
+  end
 
   # GET /comments/new
   def new

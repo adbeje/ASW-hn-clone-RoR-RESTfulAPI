@@ -298,5 +298,5 @@ Devise.setup do |config|
   # config.sign_in_after_change_password = true
   #https://glacial-island-05388.herokuapp.com/users/auth/facebook/callback
   #https://26ced1650928466d8dd00aa25c52de2b.vfs.cloud9.us-east-1.amazonaws.com/users/auth/facebook/callback
-  config.omniauth :facebook, "553074855323459", "6b49e5b95963870dce58fbeb54160e68", callback_url: "https://5f29e454f27b4b0185f84114923cdf1d.vfs.cloud9.us-east-1.amazonaws.com/users/auth/facebook/callback"
+  config.omniauth :facebook, "553074855323459", "6b49e5b95963870dce58fbeb54160e68", callback_url: "https://26ced1650928466d8dd00aa25c52de2b.vfs.cloud9.us-east-1.amazonaws.com/users/auth/facebook/callback"
 end
