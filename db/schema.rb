@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 2020_04_16_190039) do
     t.index ["cached_votes_down"], name: "index_contribucions_on_cached_votes_down"
     t.index ["cached_votes_total"], name: "index_contribucions_on_cached_votes_total"
     t.index ["cached_votes_up"], name: "index_contribucions_on_cached_votes_up"
+    t.index ["url"], name: "index_contribucions_on_url", unique: true
     t.index ["user_id"], name: "index_contribucions_on_user_id"
   end
 

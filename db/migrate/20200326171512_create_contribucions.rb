@@ -7,5 +7,6 @@ class CreateContribucions < ActiveRecord::Migration[6.0]
 
       t.timestamps
     end
+    add_index :contribucions, :url, unique: true
   end
 end

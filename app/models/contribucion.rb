@@ -2,7 +2,7 @@ class Contribucion < ApplicationRecord
   belongs_to :user
   has_many :comments
   acts_as_votable
-  
+  validates :url, uniqueness: true, allow_blank: true
   validate :verificar
   
   def verificar
