@@ -56,6 +56,14 @@
             |
             <%= link_to 'unlike', unlike_reply_path(reply.id), method: :get%>
             <%end%>
+            |
+            <a href="/contribucions/<%= reply.comment_id %>"> parent </a> 
+            |
+            <a href="/comments/<%= reply.id %>/edit"> edit </a> 
+            |
+            <a><%= link_to 'delete', reply, method: :delete, data: { confirm: 'Are you sure?' } %></a> 
+            | on:
+            <a href="/contribucions/<%= reply.comment_id %>"> <%= reply.comment.contribucion.title %></a>
             </small> </div>
            &nbsp;&nbsp;&nbsp;&nbsp;<%= reply.content %>
         </div>
