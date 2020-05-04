@@ -8,6 +8,18 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :omniauthable, :omniauth_providers => [:facebook]
          acts_as_voter
+         
+  
+  ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+  ENCODING = "MOhqm0PnycUZeLdK8YvDCgNfb7FJtiHT52BrxoAkas9RWlXpEujSGI64VzQ31w"
+
+    def encode(text)
+        return text.tr(ALPHABET, ENCODING)
+    end
+
+    def decode(text)
+        return text.tr(ENCODING, ALPHABET)
+    end
   
   def self.new_with_session(params, session)
     super.tap do |user|
@@ -33,6 +45,10 @@ class User < ApplicationRecord
     return true if new_record?
     password.present? || password_confirmation.present?
   end
+  
+    def token()
+       encode(email)
+    end
 
   
 end
