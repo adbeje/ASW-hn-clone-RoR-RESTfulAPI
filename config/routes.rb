@@ -2,12 +2,32 @@ Rails.application.routes.draw do
   
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks", registrations: "users/registrations" }
   resources :users, :only => [:show]
+  
+  scope "/api",defaults: {format: 'json'} do
+    get '/contribucions/:id' =>'api/contribucions#show'
+    get '/news' =>'api/contribucions#index_ordered'
+    get '/asks'=>'api/contribucions#index_ask'
+    get '/contribucions'=>'api/contribucions#index'
+    get '/contribucions/user/:id' => 'api/contribucions#fromuser'
+    get '/contribucions/upvoted/users/:id' => 'api/contribucions#upvotedbyuser'
 
-scope "/api",defaults: {format: 'json'} do
-  
-  get '/contribucions' =>'api/contribucions#index'
-  
-end
+    get '/users/:id' => 'api/users#show'
+
+    
+    get '/comments/:id' => 'api/comments#show'
+    get '/comments' => 'api/comments#showall'
+    get '/comments/user/:id' => 'api/comments#fromuser'
+    get '/comments/contribucions/:id' => 'api/comments#fromcontribucion'
+    get '/comments/upvoted/users/:id' => 'api/comments#upvotedbyuser'
+    
+    get '/replies/:id' => 'api/replies#show'
+    get '/replies' => 'api/replies#showall'
+    get '/replies/user/:id' => 'api/replies#fromuser'
+    get '/replies/comments/:id' => 'api/replies#fromcomment'
+    
+
+
+  end
 
   resources :contribucions do
     member do
@@ -43,4 +63,5 @@ end
   get  '/upvotedsubmissions', to: 'contribucions#index_upvoted'
   get  '/upvotedcomments',    to: 'comments#index_upvoted'
   get  '/submissions',        to: 'contribucions#index_ordered'
+  
 end

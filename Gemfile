@@ -13,6 +13,7 @@ gem 'devise'
 gem 'omniauth-facebook'
 gem 'figaro'
 gem 'acts_as_votable'
+gem 'rack-cors'
 
 group :development, :test do
   gem 'sqlite3', '1.4.1'

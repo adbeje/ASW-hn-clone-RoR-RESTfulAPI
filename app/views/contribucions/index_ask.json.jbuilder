@@ -1,1 +1,3 @@
-json.array! @contribucions, partial: "contribucions/contribucion", as: :contribucion
+json.array!(@contribucions) do |contribucion|
+    json.extract! @contribucion, :id, :title, :url, :text, :created_at, :updated_at, :points, :tipus, :user_id
+end

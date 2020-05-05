@@ -1,1 +1,1 @@
-json.partial! "contribucions/contribucion", contribucion: @contribucion
+json.extract! @contribucion, :id, :title, :url, :text, :created_at, :updated_at, :points, :tipus, :user_id
