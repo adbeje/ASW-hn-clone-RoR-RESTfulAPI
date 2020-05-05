@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     get '/news' =>'api/contribucions#index_ordered'
     get '/asks'=>'api/contribucions#index_ask'
     get '/contribucions'=>'api/contribucions#index'
-    get '/contribucions/user/:id' => 'api/contribucions#fromuser'
+    get '/contribucions/users/:id' => 'api/contribucions#fromuser'
     get '/contribucions/upvoted/users/:id' => 'api/contribucions#upvotedbyuser'
 
     get '/users/:id' => 'api/users#show'
@@ -16,13 +16,14 @@ Rails.application.routes.draw do
     
     get '/comments/:id' => 'api/comments#show'
     get '/comments' => 'api/comments#showall'
-    get '/comments/user/:id' => 'api/comments#fromuser'
+    get '/comments/users/:id' => 'api/comments#fromuser'
     get '/comments/contribucions/:id' => 'api/comments#fromcontribucion'
     get '/comments/upvoted/users/:id' => 'api/comments#upvotedbyuser'
     
     get '/replies/:id' => 'api/replies#show'
     get '/replies' => 'api/replies#showall'
-    get '/replies/user/:id' => 'api/replies#fromuser'
+    get '/replies/users/:id' => 'api/replies#fromuser'
+    get '/replies/upvoted/users/:id' => 'api/replies#upvotedbyuser'
     get '/replies/comments/:id' => 'api/replies#fromcomment'
     
 

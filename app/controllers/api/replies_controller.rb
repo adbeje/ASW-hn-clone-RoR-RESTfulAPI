@@ -28,5 +28,13 @@ def fromcomment
     end
 end
 
+def upvotedbyuser
+    @user = User.find(params[:id])
+    @replies = @user.get_up_voted Reply
+    respond_to do |format|
+      format.json { render json: @replies}
+    end
+end
+
 
 end
