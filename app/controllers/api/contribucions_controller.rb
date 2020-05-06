@@ -43,7 +43,109 @@ class Api::ContribucionsController < Api::ApiController
     end
   end
   
+  def vote
+    if !params[:apiKey].nil?
+
+      @user = User.find_by_apiKey(params[:apiKey])
+      @contribucion = Contribucion.find(params[:id])
+      @contribucion.liked_by @user
+      respond_to do |format|
+        format.json { render json: @contribucion, status: 200 }
+      end
+    else
+      respond_to do |format|
+        format.json { render status: :method_not_allowed }
+      end
+    end
+  end
+  
+  def downvote
+    if !params[:apiKey].nil?
+
+      @user = User.find_by_apiKey(params[:apiKey])
+      @contribucion = Contribucion.find(params[:id])
+      @contribucion.unliked_by @user
+      respond_to do |format|
+        format.json { render json: @contribucion, status: 200 }
+      end
+    else
+      respond_to do |format|
+        format.json { render status: :method_not_allowed }
+      end
+    end
+  end
+  
   def create
-    
+    if !params[:apiKey].nil?
+    @user = User.find_by_apiKey(params[:apiKey])
+    params.delete :apiKey
+
+    @contribucion = Contribucion.new(contribucion_params)
+      if @contribucion.url.nil?
+        @contribucion.tipus = "ask"
+      else
+        if !@contribucion.url.nil?
+          if @contribucion.url != ""
+            @contribucion.tipus = "url"
+          else
+            @contribucion.tipus = "ask"
+          end
+        end
+      end
+      respond_to do |format|
+        @contribucion.user_id = @user.id
+        if @contribucion.save
+          format.json { render :show, status: :created, json: @contribucion }
+        else
+          format.json { render json: @contribucion.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      respond_to do |format|
+        format.json { render json: {errors: 'Method not Allowed'}, status: :method_not_allowed }
+      end
+    end
+  end
+  
+  def edit
+    @userAK = User.find_by_apiKey(params[:apiKey])
+    @contribucion = Contribucion.find(params[:id])
+    if @userAK.id == @contribucion.user_id
+      respond_to do |format|
+        if @contribucion.update(contribucion_params)
+          format.json { render status: :ok, json: @contribucion }
+        else
+          format.json { render json: @user.errors, status: :unprocessable_entity }
+        end
+      end
+
+    else
+      respond_to do |format|
+        format.json { render json: {errors: 'Method not Allowed'}, status: :method_not_allowed }
+      end
+    end
+  end
+  
+  def delete
+    @userAK = User.find_by_apiKey(params[:apiKey])
+    @contribucion = Contribucion.find(params[:id])
+    if @userAK.id == @contribucion.user_id
+      respond_to do |format|
+        if @contribucion.delete
+          format.json { render status: :ok, json: @contribucion }
+        else
+          format.json { render json: @user.errors, status: :unprocessable_entity }
+        end
+      end
+
+    else
+      respond_to do |format|
+        format.json { render json: {errors: 'Method not Allowed'}, status: :method_not_allowed }
+      end
+    end
+  end
+  
+  def contribucion_params
+    params.permit(:title, :url, :text, :tipus)
   end
 end
