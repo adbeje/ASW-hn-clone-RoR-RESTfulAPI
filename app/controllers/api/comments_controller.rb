@@ -98,6 +98,41 @@ end
     end
   end
   
+    def vote
+      if !params[:apiKey].nil?
+        @user = User.find_by_apiKey(params[:apiKey])
+        @comment = Comment.find(params[:id])
+        @comment.liked_by @user
+        @comment.user.karma += 1
+        @comment.user.save
+        respond_to do |format|
+          format.json { render json: @comment, status: 200 }
+        end
+      else
+        respond_to do |format|
+          format.json { render status: :method_not_allowed }
+        end
+      end
+    end
+  
+  def downvote
+    if !params[:apiKey].nil?
+      @user = User.find_by_apiKey(params[:apiKey])
+      @comment = Comment.find(params[:id])
+      @comment.unliked_by @user
+      @comment.user.karma -= 1
+      @comment.user.save
+      respond_to do |format|
+        format.json { render json: @comment, status: 200 }
+      end
+    else
+      respond_to do |format|
+        format.json { render status: :method_not_allowed }
+      end
+    end
+  end
+
+  
 
 def comments_params
   params.permit(:content)

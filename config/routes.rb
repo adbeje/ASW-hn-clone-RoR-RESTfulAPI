@@ -28,7 +28,8 @@ Rails.application.routes.draw do
     get '/comments/upvoted/users/:id' => 'api/comments#upvotedbyuser'
     post'/comments/contribucions/:id'=> 'api/comments#postcomment'
     put '/comments/edit/:id' => 'api/comments#edit'
-  #  put '/comments/vote/:id' => 'api/comments#vote'
+    put '/comments/vote/:id' => 'api/comments#vote'
+    put '/comments/downvote/:id' => 'api/comments#downvote'
     delete '/comments/:id' => 'api/comments#delete'
 
 
@@ -39,7 +40,8 @@ Rails.application.routes.draw do
     get '/replies/upvoted/users/:id' => 'api/replies#upvotedbyuser'
     get '/replies/comments/:id' => 'api/replies#fromcomment'
     post'/replies/comments/:id' => 'api/replies#postreply'
-  # put '/replies/vote/:id => 'api/replies#vote'
+    put '/replies/vote/:id' => 'api/replies#vote'
+    put '/replies/downvote/:id' => 'api/replies#downvote'
     put '/replies/edit/:id' => 'api/replies#edit'
     delete '/replies/:id' => 'api/replies#delete'
     

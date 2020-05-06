@@ -49,6 +49,8 @@ class Api::ContribucionsController < Api::ApiController
       @user = User.find_by_apiKey(params[:apiKey])
       @contribucion = Contribucion.find(params[:id])
       @contribucion.liked_by @user
+      @contribucion.user.karma += 1
+      @contribucion.user.save
       respond_to do |format|
         format.json { render json: @contribucion, status: 200 }
       end
@@ -65,6 +67,8 @@ class Api::ContribucionsController < Api::ApiController
       @user = User.find_by_apiKey(params[:apiKey])
       @contribucion = Contribucion.find(params[:id])
       @contribucion.unliked_by @user
+      @contribucion.user.karma -= 1
+      @contribucion.user.save
       respond_to do |format|
         format.json { render json: @contribucion, status: 200 }
       end
