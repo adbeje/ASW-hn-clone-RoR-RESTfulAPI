@@ -45,14 +45,19 @@ class Api::ContribucionsController < Api::ApiController
   
   def vote
     if !params[:apiKey].nil?
-
       @user = User.find_by_apiKey(params[:apiKey])
       @contribucion = Contribucion.find(params[:id])
-      @contribucion.liked_by @user
-      @contribucion.user.karma += 1
-      @contribucion.user.save
-      respond_to do |format|
-        format.json { render json: @contribucion, status: 200 }
+      if @user.id != @contribucion.user_id
+            @contribucion.liked_by @user
+            @contribucion.user.karma += 1
+            @contribucion.user.save
+            respond_to do |format|
+              format.json { render json: @contribucion, status: 200 }
+            end
+      else
+        respond_to do |format|
+          format.json { render json: {errors: 'You can not vote yourself'}, status: :method_not_allowed }
+        end
       end
     else
       respond_to do |format|
@@ -63,7 +68,6 @@ class Api::ContribucionsController < Api::ApiController
   
   def downvote
     if !params[:apiKey].nil?
-
       @user = User.find_by_apiKey(params[:apiKey])
       @contribucion = Contribucion.find(params[:id])
       @contribucion.unliked_by @user
@@ -84,26 +88,32 @@ class Api::ContribucionsController < Api::ApiController
     @user = User.find_by_apiKey(params[:apiKey])
     params.delete :apiKey
 
-    @contribucion = Contribucion.new(contribucion_params)
-      if @contribucion.url.nil?
-        @contribucion.tipus = "ask"
-      else
-        if !@contribucion.url.nil?
-          if @contribucion.url != ""
-            @contribucion.tipus = "url"
-          else
-            @contribucion.tipus = "ask"
+    if !@user.nil?
+      @contribucion = Contribucion.new(contribucion_params)
+        if @contribucion.url.nil?
+          @contribucion.tipus = "ask"
+        else
+          if !@contribucion.url.nil?
+            if @contribucion.url != ""
+              @contribucion.tipus = "url"
+            else
+              @contribucion.tipus = "ask"
+            end
           end
         end
-      end
-      respond_to do |format|
-        @contribucion.user_id = @user.id
-        if @contribucion.save
-          format.json { render :show, status: :created, json: @contribucion }
-        else
-          format.json { render json: @contribucion.errors, status: :unprocessable_entity }
+        respond_to do |format|
+          @contribucion.user_id = @user.id
+          if @contribucion.save
+            format.json { render :show, status: :created, json: @contribucion }
+          else
+            format.json { render json: @contribucion.errors, status: :unprocessable_entity }
+          end
         end
+    else
+      respond_to do |format|
+        format.json { render json: {errors: 'Method not Allowed'}, status: :method_not_allowed }
       end
+    end
     else
       respond_to do |format|
         format.json { render json: {errors: 'Method not Allowed'}, status: :method_not_allowed }
@@ -112,28 +122,34 @@ class Api::ContribucionsController < Api::ApiController
   end
   
   def edit
-    @userAK = User.find_by_apiKey(params[:apiKey])
+    @userexternal = User.find_by_apiKey(params[:apiKey])
     @contribucion = Contribucion.find(params[:id])
-    if @userAK.id == @contribucion.user_id
-      respond_to do |format|
-        if @contribucion.update(contribucion_params)
-          format.json { render status: :ok, json: @contribucion }
+    if !@userexternal.nil?
+        if @userexternal.id == @contribucion.user_id
+          respond_to do |format|
+            if @contribucion.update(contribucion_params)
+              format.json { render status: :ok, json: @contribucion }
+            else
+              format.json { render json: @user.errors, status: :unprocessable_entity }
+            end
+          end
+    
         else
-          format.json { render json: @user.errors, status: :unprocessable_entity }
+          respond_to do |format|
+            format.json { render json: {errors: 'Method not Allowed'}, status: :method_not_allowed }
+          end
         end
-      end
-
     else
-      respond_to do |format|
-        format.json { render json: {errors: 'Method not Allowed'}, status: :method_not_allowed }
+       respond_to do |format|
+            format.json { render json: {errors: 'ApiKey does not exist'}, status: :method_not_allowed }
       end
     end
   end
   
   def delete
-    @userAK = User.find_by_apiKey(params[:apiKey])
+    @userexternal = User.find_by_apiKey(params[:apiKey])
     @contribucion = Contribucion.find(params[:id])
-    if @userAK.id == @contribucion.user_id
+    if @userexternal.id == @contribucion.user_id
       respond_to do |format|
         if @contribucion.delete
           format.json { render status: :ok, json: @contribucion }
