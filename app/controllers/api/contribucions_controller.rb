@@ -42,4 +42,8 @@ class Api::ContribucionsController < Api::ApiController
       format.json { render json: @contribucions}
     end
   end
+  
+  def create
+    
+  end
 end

@@ -10,8 +10,14 @@ Rails.application.routes.draw do
     get '/contribucions'=>'api/contribucions#index'
     get '/contribucions/users/:id' => 'api/contribucions#fromuser'
     get '/contribucions/upvoted/users/:id' => 'api/contribucions#upvotedbyuser'
+   # post '/contribucions' => 'api/contribucions#create'
+   # put '/contribucions/vote/:id => 'api/contribucions#vote'
+  # put '/contribucions/edit/:id' => 'api/contribucions#edit'
+  # delete '/contribucions/:id => 'api/contribucions#delete'
 
     get '/users/:id' => 'api/users#show'
+    post '/users/' =>'api/users#create'
+  # put '/users/about' => 'api/contribucions#editabout'
 
     
     get '/comments/:id' => 'api/comments#show'
@@ -19,12 +25,20 @@ Rails.application.routes.draw do
     get '/comments/users/:id' => 'api/comments#fromuser'
     get '/comments/contribucions/:id' => 'api/comments#fromcontribucion'
     get '/comments/upvoted/users/:id' => 'api/comments#upvotedbyuser'
+  #  post'/comments/contribucions/:id'=> 'api/comments#postcomment'
+  # put '/comments/vote/:id => 'api/comments#vote'
+  # put '/comments/edit/:id' => 'api/comments#edit'
+  # delete '/comments/:id => 'api/comments#delete'
     
     get '/replies/:id' => 'api/replies#show'
     get '/replies' => 'api/replies#showall'
     get '/replies/users/:id' => 'api/replies#fromuser'
     get '/replies/upvoted/users/:id' => 'api/replies#upvotedbyuser'
     get '/replies/comments/:id' => 'api/replies#fromcomment'
+  # post'/replies/comments/:id' => 'api/replies#postreply'
+  # put '/replies/vote/:id => 'api/replies#vote'
+  # put '/replies/edit/:id' => 'api/replies#edit'
+  # delete '/replies/:id => 'api/replies#delete'
     
 
 
