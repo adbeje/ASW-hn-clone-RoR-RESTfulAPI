@@ -8,6 +8,7 @@
     <tr><td valign="top">karma:</td><td><%=@user.karma%></td></tr>
     <tr><td valign="top">about:</td><td><%= f.text_area :about, autocomplete: "about", size: "60x10" %></td></tr>
     <tr><td valign="top">email:</td><td><%=@user.email%></td></tr>
+    <tr><td valign="top">apiKey:</td><td><%=@user.apiKey%></td></tr>
     <tr><td></td><td valign="top"><a href= "/submissions?user_id=<%=@user.id%>" > <u>submissions</u></a></td></tr>
     <tr><td></td><td valign="top"><a href= "/thread" > <u>comments</u></a></td></tr>
     <tr><td></td><td valign="top"><a href= "/upvotedsubmissions?user_id=<%=@user.id%>"> <u>Upvoted submissions</u></a> / <a href= "/upvotedcomments?user_id=<%=@user.id%>" ><u>comments</u></a> <span style="font-style:italic">(private)</span></td></tr>

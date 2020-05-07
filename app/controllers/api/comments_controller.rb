@@ -87,49 +87,56 @@ class Api::CommentsController < Api::ApiController
 
   def delete
     @userexternal = User.find_by_apiKey(params[:apiKey])
-    @comment = Comment.find(params[:id])
-    if @userexternal.id == @comment.user_id
+    if @userexternal.nil?
       respond_to do |format|
-        if @comment.delete
-          format.json { render status: :ok, json: @comment }
-        else
-          format.json { render json: @user.errors, status: :unprocessable_entity }
-        end
+        format.json { render json: {errors: 'ApiKey does not exist'}, status: :method_not_allowed }
       end
-
     else
-      respond_to do |format|
-        format.json { render json: {errors: 'Method not Allowed'}, status: :method_not_allowed }
+      @comment = Comment.find(params[:id])
+      if @userexternal.id == @comment.user_id
+        respond_to do |format|
+          if @comment.delete
+            format.json { render status: :ok, json: @comment }
+          else
+            format.json { render json: @user.errors, status: :unprocessable_entity }
+          end
+        end
+  
+      else
+        respond_to do |format|
+          format.json { render json: {errors: 'Method not Allowed'}, status: :method_not_allowed }
+        end
       end
     end
   end
   
-    def vote
-      if !params[:apiKey].nil?
-        @user = User.find_by_apiKey(params[:apiKey])
-        @comment = Comment.find(params[:id])
-        @comment.liked_by @user
-        @comment.user.karma += 1
-        @comment.user.save
-        respond_to do |format|
-          format.json { render json: @comment, status: 200 }
-        end
-      else
-        respond_to do |format|
-          format.json { render status: :method_not_allowed }
-        end
-      end
-    end
-  
-  def downvote
+  def vote
     if !params[:apiKey].nil?
       @user = User.find_by_apiKey(params[:apiKey])
+      if @user.nil?
+        respond_to do |format|
+          format.json { render json: {errors: 'Invalid apiKey'}, status: :method_not_allowed }
+        end
+      else
       @comment = Comment.find(params[:id])
-      @comment.unliked_by @user
-      @comment.user.karma -= 1
-      @comment.user.save
-      respond_to do |format|
-        format.json { render json: @comment, status: 200 }
+      if @user.voted_up_on? @comment
+        respond_to do |format|
+          format.json { render json: {errors: 'You cant vote twice'}, status: :method_not_allowed }
+        end
+      else  
+          if @user.id != @comment.user_id
+                @comment.liked_by @user
+                @comment.user.karma += 1
+                @comment.user.save
+                respond_to do |format|
+                  format.json { render json: @comment, status: 200 }
+                end
+          else
+            respond_to do |format|
+              format.json { render json: {errors: 'You can not vote yourself'}, status: :method_not_allowed }
+            end
+          end
+      end
       end
     else
       respond_to do |format|
@@ -137,7 +144,42 @@ class Api::CommentsController < Api::ApiController
       end
     end
   end
-
+  
+  def downvote
+    if !params[:apiKey].nil?
+      @user = User.find_by_apiKey(params[:apiKey])
+      if @user.nil?
+        respond_to do |format|
+          format.json { render json: {errors: 'Invalid apiKey'}, status: :method_not_allowed }
+        end
+      else
+      @comment = Comment.find(params[:id])
+      if @user.voted_down_on? @comment
+        respond_to do |format|
+          format.json { render json: {errors: 'You cant downvote twice'}, status: :method_not_allowed }
+        end
+      else  
+          if @user.id != @comment.user_id
+                @comment.unliked_by @user
+                @comment.user.karma -= 1
+                @comment.user.save
+                respond_to do |format|
+                  format.json { render json: @comment, status: 200 }
+                end
+          else
+            respond_to do |format|
+              format.json { render json: {errors: 'You can not downvote yourself'}, status: :method_not_allowed }
+            end
+          end
+      end
+      end
+    else
+      respond_to do |format|
+        format.json { render status: :method_not_allowed }
+      end
+    end
+  end
+  
   
 
 def comments_params

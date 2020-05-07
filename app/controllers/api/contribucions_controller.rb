@@ -46,18 +46,30 @@ class Api::ContribucionsController < Api::ApiController
   def vote
     if !params[:apiKey].nil?
       @user = User.find_by_apiKey(params[:apiKey])
-      @contribucion = Contribucion.find(params[:id])
-      if @user.id != @contribucion.user_id
-            @contribucion.liked_by @user
-            @contribucion.user.karma += 1
-            @contribucion.user.save
-            respond_to do |format|
-              format.json { render json: @contribucion, status: 200 }
-            end
-      else
+      if @user.nil?
         respond_to do |format|
-          format.json { render json: {errors: 'You can not vote yourself'}, status: :method_not_allowed }
+          format.json { render json: {errors: 'Invalid apiKey'}, status: :method_not_allowed }
         end
+      else
+      @contribucion = Contribucion.find(params[:id])
+      if @user.voted_up_on? @contribucion
+        respond_to do |format|
+          format.json { render json: {errors: 'You cant vote twice'}, status: :method_not_allowed }
+        end
+      else  
+          if @user.id != @contribucion.user_id
+                @contribucion.liked_by @user
+                @contribucion.user.karma += 1
+                @contribucion.user.save
+                respond_to do |format|
+                  format.json { render json: @contribucion, status: 200 }
+                end
+          else
+            respond_to do |format|
+              format.json { render json: {errors: 'You can not vote yourself'}, status: :method_not_allowed }
+            end
+          end
+      end
       end
     else
       respond_to do |format|
@@ -69,12 +81,30 @@ class Api::ContribucionsController < Api::ApiController
   def downvote
     if !params[:apiKey].nil?
       @user = User.find_by_apiKey(params[:apiKey])
+      if @user.nil?
+        respond_to do |format|
+          format.json { render json: {errors: 'Invalid apiKey'}, status: :method_not_allowed }
+        end
+      else
       @contribucion = Contribucion.find(params[:id])
-      @contribucion.unliked_by @user
-      @contribucion.user.karma -= 1
-      @contribucion.user.save
-      respond_to do |format|
-        format.json { render json: @contribucion, status: 200 }
+      if @user.voted_down_on? @contribucion
+        respond_to do |format|
+          format.json { render json: {errors: 'You cant downvote twice'}, status: :method_not_allowed }
+        end
+      else  
+          if @user.id != @contribucion.user_id
+                @contribucion.unliked_by @user
+                @contribucion.user.karma -= 1
+                @contribucion.user.save
+                respond_to do |format|
+                  format.json { render json: @contribucion, status: 200 }
+                end
+          else
+            respond_to do |format|
+              format.json { render json: {errors: 'You can not downvote yourself'}, status: :method_not_allowed }
+            end
+          end
+      end
       end
     else
       respond_to do |format|
@@ -149,19 +179,25 @@ class Api::ContribucionsController < Api::ApiController
   def delete
     @userexternal = User.find_by_apiKey(params[:apiKey])
     @contribucion = Contribucion.find(params[:id])
-    if @userexternal.id == @contribucion.user_id
+    if @userexternal.nil?
       respond_to do |format|
-        if @contribucion.delete
-          format.json { render status: :ok, json: @contribucion }
-        else
-          format.json { render json: @user.errors, status: :unprocessable_entity }
-        end
+        format.json { render json: {errors: 'ApiKey does not exist'}, status: :method_not_allowed }
       end
-
     else
-      respond_to do |format|
-        format.json { render json: {errors: 'Method not Allowed'}, status: :method_not_allowed }
-      end
+        if @userexternal.id == @contribucion.user_id
+          respond_to do |format|
+            if @contribucion.delete
+              format.json { render status: :ok, json: @contribucion }
+            else
+              format.json { render json: @user.errors, status: :unprocessable_entity }
+            end
+          end
+    
+        else
+          respond_to do |format|
+            format.json { render json: {errors: 'Method not Allowed'}, status: :method_not_allowed }
+          end
+        end
     end
   end
   
