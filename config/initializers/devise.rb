@@ -297,6 +297,7 @@ Devise.setup do |config|
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
   #https://glacial-island-05388.herokuapp.com/users/auth/facebook/callback
+  #https://salty-inlet-98667.herokuapp.com/
   #https://26ced1650928466d8dd00aa25c52de2b.vfs.cloud9.us-east-1.amazonaws.com/users/auth/facebook/callback
-  config.omniauth :facebook, "553074855323459", "6b49e5b95963870dce58fbeb54160e68", callback_url: "https://glacial-island-05388.herokuapp.com/users/auth/facebook/callback/users/auth/facebook/callback"
+  config.omniauth :facebook, "553074855323459", "6b49e5b95963870dce58fbeb54160e68", callback_url: "https://salty-inlet-98667.herokuapp.com//users/auth/facebook/callback/users/auth/facebook/callback"
 end
