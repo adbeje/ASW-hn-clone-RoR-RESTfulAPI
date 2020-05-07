@@ -12,10 +12,10 @@ info:
     - Álvaro Trius
     - Adrià Ventura
   
-host: glacial-island-05388.herokuapp.com
+host: salty-inlet-98667.herokuapp.com/
 
 schemes:
-  - http
+  - https
 
 basePath: /api
 consumes:
