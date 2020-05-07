@@ -12,7 +12,7 @@ info:
     - Álvaro Trius
     - Adrià Ventura
   
-host: salty-inlet-98667.herokuapp.com/
+host: salty-inlet-98667.herokuapp.com
 
 schemes:
   - https
@@ -65,13 +65,29 @@ paths:
         - Contribucion
       parameters:
         -
-          name: body
-          in: body
+          name: apiKey
+          in: query
+          description: apiKey of the user contribucion
           required: true
-          description: Contribucion information
-          schema:
-            $ref: "#/definitions/NewContribucion"
-          
+          type: string
+        -
+          name: title
+          in: query
+          description: Title of the contribucion
+          required: true
+          type: string
+        -
+          name: url
+          in: query
+          description: url of the contribucion
+          required: false
+          type: string
+        -
+          name: text
+          in: query
+          description: text of the contribucion
+          required: false
+          type: string
       responses:
         '201':
           description: Contribucion created
@@ -84,7 +100,7 @@ paths:
         '409':
           description: Conflict on creating contribucion. It can't have text and url
   
-  /contribucions/:id:
+  /contribucions/{id}:
     get:
       description: |
         Gets a specific `Contribucion` by **id**
@@ -121,7 +137,13 @@ paths:
           required: true
           type: number
           format: int
-  
+        -
+          name: apiKey
+          in: query
+          description: apiKey of the user
+          required: true
+          type: string
+
       responses:
         '200':
           description: Successful response
@@ -168,7 +190,7 @@ paths:
         '401':
           description: Unauthorized user
           
-  /contribucions/users/:id:
+  /contribucions/users/{id}:
     get:
       description: |
         Gets all `Contribucion` posted by one user
@@ -194,7 +216,7 @@ paths:
           description: Unauthorized user
         '404':
           description: Contribucion not found
-  /contribucions/upvoted/users/:id:
+  /contribucions/upvoted/users/{id}:
     get:
       description: |
         Gets all `Contribucion` upvoted by one user
@@ -221,7 +243,7 @@ paths:
         '404':
           description: Contribucion not found
   
-  /contribucions/downvote/:id:
+  /contribucions/downvote/{id}:
     put:
       description: |
         A specific `User` downvotes a specific `Contribucion`.
@@ -230,15 +252,14 @@ paths:
         - Contribucion
       parameters:
         -
-          name: user_id
+          name: apiKey
           in: query
-          description:  Unique identifier representing the user that make the downvotation
+          description: apiKey of the user
           required: true
-          type: number
-          format: int
+          type: string
         - 
-          name: contribucion_id
-          in: query
+          name: id
+          in: path
           description: Unique identifier representing the contribucion that receives the downvotation
           required: true
           type: number
@@ -255,7 +276,7 @@ paths:
           description: User or Contribucion not found
         '409':
           description: The user has already voted this contribucion
-  /contribucions/vote/:id:
+  /contribucions/vote/{id}:
     put:
       description: |
         A specific `User` upvotes a specific `Contribucion`.
@@ -264,15 +285,14 @@ paths:
         - Contribucion
       parameters:
         -
-          name: user_id
+          name: apiKey
           in: query
-          description:  Unique identifier representing the user that make the upvotation
+          description: apiKey of the user
           required: true
-          type: number
-          format: int
+          type: string
         - 
-          name: contribucion_id
-          in: query
+          name: id
+          in: path
           description: Unique identifier representing the contribucion that receives the upvotation
           required: true
           type: number
@@ -289,7 +309,7 @@ paths:
           description: User or Contribucion not found
         '409':
           description: The user has already voted this contribucion
-  /contribucions/edit/:id:
+  /contribucions/edit/{id}:
     put:
       description: |
         `User` update a specific `Contribucion` created by himself.
@@ -297,20 +317,31 @@ paths:
         - Contribucion
       parameters:
         -
-          name: user_id
+          name: apiKey
           in: query
-          description:  Unique identifier representing the user that make the update
+          description: apiKey of the user
           required: true
-          type: number
-          format: int
+          type: string
         - 
-          name: contribucion_id
-          in: query
+          name: id
+          in: path
           description: Unique identifier representing the contribucion that receives the update
           required: true
           type: number
           format: int
-          
+        - 
+          name: text
+          in: query
+          description: Text of the update
+          required: false
+          type: string
+        - 
+          name: url
+          in: query
+          description: Url of the update
+          required: false
+          type: string
+
       responses:
         '201':
           description: Update succesful
@@ -373,6 +404,12 @@ paths:
         - Comment
       parameters:
         -
+          name: apiKey
+          in: query
+          description: apiKey of the user contribucion
+          required: true
+          type: string
+        -
           name: id
           in: path
           description: ID of the comment
@@ -387,7 +424,7 @@ paths:
           description: Unauthorized user
         '404':
           description: Comment not found
-  /comments/contribucions/:id:
+  /comments/contribucions/{id}:
     get:
       description: |
         Get all `Comment` of one `Contribucion`
@@ -396,8 +433,8 @@ paths:
         - Comment
       parameters:
         - 
-          name: contribucion_id
-          in: query
+          name: id
+          in: path
           description: Unique identifier representing the contribucion.
           required: true
           type: number
@@ -417,15 +454,20 @@ paths:
         - Comment
       parameters:
         -
-          name: body
-          in: body
-          required: true
-          description: Comment information
-          schema:
-            $ref: "#/definitions/NewComment"
-        -
-          name: contribucion_id
+          name: apiKey
           in: query
+          description: apiKey of the user contribucion
+          required: true
+          type: string
+        -
+          name: content
+          in: query
+          description: Content of the comment
+          required: true
+          type: string
+        -
+          name: id
+          in: path
           description: Unique identifier representing the contribucion.
           required: true
           type: number
@@ -442,7 +484,7 @@ paths:
         '409':
           description: Conflict on creating comment. It can't have text and url
       
-  /comments/users/:id:
+  /comments/users/{id}:
     get:
       description: |
         Get all `Comment` posted by one `User`
@@ -451,8 +493,8 @@ paths:
         - Comment
       parameters:
         - 
-          name: user_id
-          in: query
+          name: id
+          in: path
           description: Unique identifier representing the user.
           required: true
           type: number
@@ -465,7 +507,7 @@ paths:
           description: Parameter not allowed
         '404':
           description: Comment not found
-  /comments/upvoted/users/:id:
+  /comments/upvoted/users/{id}:
     get:
       description: |
         Gets all `Comment` upvoted by one user
@@ -492,7 +534,7 @@ paths:
         '404':
           description: Comment not found
           
-  /comments/downvote/:id:
+  /comments/downvote/{id}:
     put:
       description: |
         A specific `User` downvotes a specific `Comment`.
@@ -501,15 +543,14 @@ paths:
         - Comment
       parameters:
         -
-          name: user_id
+          name: apiKey
           in: query
-          description:  Unique identifier representing the user that make the downvotation
+          description: apiKey of the user
           required: true
-          type: number
-          format: int
+          type: string
         - 
-          name: comment_id
-          in: query
+          name: id
+          in: path
           description: Unique identifier representing the comment that receives the downvotation
           required: true
           type: number
@@ -527,7 +568,7 @@ paths:
         '409':
           description: The user has already voted this comment
           
-  /comments/vote/:id:
+  /comments/vote/{id}:
     put:
       description: |
         A specific `User` upvotes a specific `Comment`.
@@ -535,17 +576,16 @@ paths:
         - Comment
       parameters:
         -
-          name: user_id
+          name: apiKey
           in: query
-          description:  Unique identifier representing the user that make the upvotation
+          description: apiKey of the user
           required: true
-          type: number
-          format: int
+          type: string
         - 
-          name: comment_id
-          in: query
+          name: id
+          in: path
           description: Unique identifier representing the comment that receives the upvotation
-          required: false
+          required: true
           type: number
           format: int
           
@@ -561,7 +601,7 @@ paths:
         '409':
           description: The user has already voted this comment
           
-  /comments/edit/:id:
+  /comments/edit/{id}:
     put:
       description: |
         `User` update a specific `Comment` created by himself.
@@ -569,19 +609,24 @@ paths:
         - Comment
       parameters:
         -
-          name: user_id
+          name: apiKey
           in: query
-          description:  Unique identifier representing the user that make the update
+          description: apiKey of the user
+          required: true
+          type: string
+        - 
+          name: id
+          in: path
+          description: Unique identifier representing the contribucion that receives the update
           required: true
           type: number
           format: int
         - 
-          name: comment_id
+          name: content
           in: query
-          description: Unique identifier representing the comment that receives the update
+          description: Text of the update
           required: true
-          type: number
-          format: int
+          type: string
           
       responses:
         '201':
@@ -646,6 +691,12 @@ paths:
         - Reply
       parameters:
         -
+          name: apiKey
+          in: query
+          description: apiKey of the user contribucion
+          required: true
+          type: string
+        -
           name: id
           in: path
           description: ID of the reply
@@ -660,7 +711,7 @@ paths:
           description: Unauthorized user
         '404':
           description: Reply not found
-  /replies/comments/:id:
+  /replies/comments/{id}:
     get:
       description: |
         Get all `Reply` of one `Comment`
@@ -669,8 +720,8 @@ paths:
         - Reply
       parameters:
         - 
-          name: comment_id
-          in: query
+          name: id
+          in: path
           description: Unique identifier representing the comment.
           required: true
           type: number
@@ -690,15 +741,20 @@ paths:
         - Reply
       parameters:
         -
-          name: body
-          in: body
-          required: true
-          description: Reply information
-          schema:
-            $ref: "#/definitions/NewReply"
-        -
-          name: comment_id
+          name: apiKey
           in: query
+          description: apiKey of the user contribucion
+          required: true
+          type: string
+        -
+          name: content
+          in: query
+          description: Content of the reply
+          required: true
+          type: string
+        -
+          name: id
+          in: path
           description: Unique identifier representing the comment.
           required: true
           type: number
@@ -715,7 +771,7 @@ paths:
         '409':
           description: Conflict on creating reply. It can't have text and url
       
-  /replies/users/:id:
+  /replies/users/{id}:
     get:
       description: |
         Get all `Reply` posted by one `User`
@@ -724,8 +780,8 @@ paths:
         - Reply
       parameters:
         - 
-          name: user_id
-          in: query
+          name: id
+          in: path
           description: Unique identifier representing the user.
           required: true
           type: number
@@ -738,7 +794,7 @@ paths:
           description: Parameter not allowed
         '404':
           description: Reply not found
-  /replies/upvoted/users/:id:
+  /replies/upvoted/users/{id}:
     get:
       description: |
         Gets all `Reply` upvoted by one user
@@ -765,7 +821,7 @@ paths:
         '404':
           description: Reply not found
           
-  /replies/downvote/:id:
+  /replies/downvote/{id}:
     put:
       description: |
         A specific `User` downvotes a specific `Reply`.
@@ -774,15 +830,14 @@ paths:
         - Reply
       parameters:
         -
-          name: user_id
+          name: apiKey
           in: query
-          description:  Unique identifier representing the user that make the downvotation
+          description: apiKey of the user
           required: true
-          type: number
-          format: int
+          type: string
         - 
-          name: reply_id
-          in: query
+          name: id
+          in: path
           description: Unique identifier representing the reply that receives the downvotation
           required: true
           type: number
@@ -800,7 +855,7 @@ paths:
         '409':
           description: The user has already voted this reply
           
-  /replies/vote/:id:
+  /replies/vote/{id}:
     put:
       description: |
         A specific `User` upvotes a specific `Reply`.
@@ -808,17 +863,16 @@ paths:
         - Reply
       parameters:
         -
-          name: user_id
+          name: apiKey
           in: query
-          description:  Unique identifier representing the user that make the upvotation
+          description: apiKey of the user
           required: true
-          type: number
-          format: int
+          type: string
         - 
-          name: comment_id
-          in: query
+          name: id
+          in: path
           description: Unique identifier representing the reply that receives the upvotation
-          required: false
+          required: true
           type: number
           format: int
           
@@ -834,7 +888,7 @@ paths:
         '409':
           description: The user has already voted this reply
           
-  /replies/edit/:id:
+  /replies/edit/{id}:
     put:
       description: |
         `User` update a specific `Reply` created by himself.
@@ -842,19 +896,24 @@ paths:
         - Reply
       parameters:
         -
-          name: user_id
+          name: apiKey
           in: query
-          description:  Unique identifier representing the user that make the update
+          description: apiKey of the user
           required: true
-          type: number
-          format: int
+          type: string
         - 
-          name: reply_id
-          in: query
-          description: Unique identifier representing the reply that receives the update
+          name: id
+          in: path
+          description: Unique identifier representing the comment that receives the downvotation
           required: true
           type: number
           format: int
+        -
+          name: content
+          in: query
+          description: content of the reply
+          required: true
+          type: string
           
       responses:
         '201':
@@ -910,7 +969,7 @@ paths:
           description: Unauthorized user
         '404':
           description: Email not found
-  /users/:id:
+  /users/{id}:
     get:
       description: |
         Gets the `User` profile
@@ -947,12 +1006,17 @@ paths:
           type: number
           format: int
         -
-          name: body
-          in: body
+          name: about
+          in: query
           description: Text of the about area
           required: true
-          schema:
-            $ref: "#/definitions/UpdatedUser"
+          type: string
+        -
+          name: apiKey
+          in: query
+          description: apiKey of the user
+          required: true
+          type: string
             
       responses:
         '200':
@@ -1046,11 +1110,11 @@ definitions:
         description: Unique identifier representing the user who mades the contribucion
     example:
       -
+        apiKey:  _Q1fwS6uzl2zz43dp5Kjr8A
         title: "Example"
         url: ""
         text: "This is an ask"
-        user_id: 13
-  
+
   Comment:
     type: object
     properties:
