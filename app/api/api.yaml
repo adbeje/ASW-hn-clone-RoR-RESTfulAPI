@@ -1,0 +1,1230 @@
+swagger: '2.0'
+
+info:
+  title: HackerNewsClone
+  version: 1.0.0
+  description: |
+    
+    
+    Created by:
+    - Oriol Catalán
+    - Daniel Clemente
+    - Álvaro Trius
+    - Adrià Ventura
+  
+host: glacial-island-05388.herokuapp.com
+
+schemes:
+  - http
+
+basePath: /api
+consumes:
+  - application/json
+produces:
+  - application/hal+json
+
+tags:
+  - name: Contribucion
+  - name: Comment
+  - name: Reply
+  - name: User
+  
+securityDefinitions:
+  token:
+    type: apiKey
+    name: token
+    in: header
+    
+security:
+  - token: []
+    
+paths:
+  /contribucions:
+    get:
+      description: |
+        Gets all the `Contribucion` objects.
+      tags:
+        - Contribucion
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: ArrayOfContribucions
+            type: array
+            items:
+              $ref: "#/definitions/Contribucion"
+        '400':
+          description: Type not allowed
+        '401':
+          description: Unauthorized user
+          
+    post:
+      description: |
+        Creates a new `Contribucion` with the information of the `body` param
+      tags:
+        - Contribucion
+      parameters:
+        -
+          name: body
+          in: body
+          required: true
+          description: Contribucion information
+          schema:
+            $ref: "#/definitions/NewContribucion"
+          
+      responses:
+        '201':
+          description: Contribucion created
+          schema:
+            $ref: "#/definitions/Contribucion"
+        '400':
+          description: Bad request. Url or text must be set
+        '401':
+          description: Unauthorized user
+        '409':
+          description: Conflict on creating contribucion. It can't have text and url
+  
+  /contribucions/:id:
+    get:
+      description: |
+        Gets a specific `Contribucion` by **id**
+      tags:
+        - Contribucion
+      parameters:
+        -
+          name: id
+          in: path
+          description: ID of the contribucion
+          required: true
+          type: number
+          format: int
+  
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: "#/definitions/Contribucion"
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Contribucion not found
+    delete:
+      description: |
+        Deletes a specific `Contribucion` by **id**
+      tags:
+        - Contribucion
+      parameters:
+        -
+          name: id
+          in: path
+          description: ID of the contribucion
+          required: true
+          type: number
+          format: int
+  
+      responses:
+        '200':
+          description: Successful response
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Contribucion not found
+  
+  /asks:
+    get:
+      description: |
+        Gets all the asks `Contribucion` .
+      tags:
+        - Contribucion
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: ArrayOfContribucions
+            type: array
+            items:
+              $ref: "#/definitions/Contribucion"
+        '400':
+          description: Type not allowed
+        '401':
+          description: Unauthorized user
+  
+  /news:
+    get:
+      description: |
+        Gets all the urls `Contribucion` .
+      tags:
+        - Contribucion
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: ArrayOfContribucions
+            type: array
+            items:
+              $ref: "#/definitions/Contribucion"
+        '400':
+          description: Type not allowed
+        '401':
+          description: Unauthorized user
+          
+  /contribucions/users/:id:
+    get:
+      description: |
+        Gets all `Contribucion` posted by one user
+      tags:
+        - Contribucion
+      parameters:
+        -
+          name: id
+          in: path
+          description: ID of the user
+          required: true
+          type: number
+          format: int
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: ArrayOfContribucions
+            type: array
+            items:
+              $ref: "#/definitions/Contribucion"
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Contribucion not found
+  /contribucions/upvoted/users/:id:
+    get:
+      description: |
+        Gets all `Contribucion` upvoted by one user
+      tags:
+        - Contribucion
+      parameters:
+        -
+          name: id
+          in: path
+          description: ID of the user
+          required: true
+          type: number
+          format: int
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: ArrayOfContribucions
+            type: array
+            items:
+              $ref: "#/definitions/Contribucion"
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Contribucion not found
+  
+  /contribucions/downvote/:id:
+    put:
+      description: |
+        A specific `User` downvotes a specific `Contribucion`.
+        
+      tags:
+        - Contribucion
+      parameters:
+        -
+          name: user_id
+          in: query
+          description:  Unique identifier representing the user that make the downvotation
+          required: true
+          type: number
+          format: int
+        - 
+          name: contribucion_id
+          in: query
+          description: Unique identifier representing the contribucion that receives the downvotation
+          required: true
+          type: number
+          format: int
+          
+      responses:
+        '201':
+          description: Downvote created
+        '400':
+          description: Parameters not allowed
+        '401':
+          description: Unauthorized user
+        '404':
+          description: User or Contribucion not found
+        '409':
+          description: The user has already voted this contribucion
+  /contribucions/vote/:id:
+    put:
+      description: |
+        A specific `User` upvotes a specific `Contribucion`.
+        
+      tags:
+        - Contribucion
+      parameters:
+        -
+          name: user_id
+          in: query
+          description:  Unique identifier representing the user that make the upvotation
+          required: true
+          type: number
+          format: int
+        - 
+          name: contribucion_id
+          in: query
+          description: Unique identifier representing the contribucion that receives the upvotation
+          required: true
+          type: number
+          format: int
+          
+      responses:
+        '201':
+          description: Upvote created
+        '400':
+          description: Parameters not allowed
+        '401':
+          description: Unauthorized user
+        '404':
+          description: User or Contribucion not found
+        '409':
+          description: The user has already voted this contribucion
+  /contribucions/edit/:id:
+    put:
+      description: |
+        `User` update a specific `Contribucion` created by himself.
+      tags:
+        - Contribucion
+      parameters:
+        -
+          name: user_id
+          in: query
+          description:  Unique identifier representing the user that make the update
+          required: true
+          type: number
+          format: int
+        - 
+          name: contribucion_id
+          in: query
+          description: Unique identifier representing the contribucion that receives the update
+          required: true
+          type: number
+          format: int
+          
+      responses:
+        '201':
+          description: Update succesful
+          schema:
+            $ref: "#/definitions/Contribucion"
+        '400':
+          description: Parameters not allowed
+        '401':
+          description: Unauthorized user
+        '404':
+          description: User or Contribucion not found
+        
+  /comments:
+    get:
+      description: |
+        Gets all the `Comment` objects.
+      tags:
+        - Comment
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: ArrayOfComments
+            type: array
+            items:
+              $ref: "#/definitions/Comment"
+        '400':
+          description: Type not allowed
+        '401':
+          description: Unauthorized user
+          
+  
+  /comments/{id}:
+    get:
+      description: |
+        Gets a specific `Comment` by **id**
+      tags:
+        - Comment
+      parameters:
+        -
+          name: id
+          in: path
+          description: ID of the comment
+          required: true
+          type: number
+          format: int
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: "#/definitions/Comment"
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Comment not found
+    delete:
+      description: |
+        Deletes a specific `Comment` by **id**
+      tags:
+        - Comment
+      parameters:
+        -
+          name: id
+          in: path
+          description: ID of the comment
+          required: true
+          type: number
+          format: int
+  
+      responses:
+        '200':
+          description: Successful response
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Comment not found
+  /comments/contribucions/:id:
+    get:
+      description: |
+        Get all `Comment` of one `Contribucion`
+        
+      tags:
+        - Comment
+      parameters:
+        - 
+          name: contribucion_id
+          in: query
+          description: Unique identifier representing the contribucion.
+          required: true
+          type: number
+          format: int
+          
+      responses:
+        '200':
+          description: Succesful response
+        '400':
+          description: Parameter not allowed
+        '404':
+          description: Contribucion not found
+    post:
+      description: |
+        Creates a new `Comment` with the information of the `body` param
+      tags:
+        - Comment
+      parameters:
+        -
+          name: body
+          in: body
+          required: true
+          description: Comment information
+          schema:
+            $ref: "#/definitions/NewComment"
+        -
+          name: contribucion_id
+          in: query
+          description: Unique identifier representing the contribucion.
+          required: true
+          type: number
+          format: int
+      responses:
+        '201':
+          description: Comment created
+          schema:
+            $ref: "#/definitions/Comment"
+        '400':
+          description: Bad request. Url or text must be set
+        '401':
+          description: Unauthorized user
+        '409':
+          description: Conflict on creating comment. It can't have text and url
+      
+  /comments/users/:id:
+    get:
+      description: |
+        Get all `Comment` posted by one `User`
+        
+      tags:
+        - Comment
+      parameters:
+        - 
+          name: user_id
+          in: query
+          description: Unique identifier representing the user.
+          required: true
+          type: number
+          format: int
+          
+      responses:
+        '200':
+          description: Succesful response
+        '400':
+          description: Parameter not allowed
+        '404':
+          description: Comment not found
+  /comments/upvoted/users/:id:
+    get:
+      description: |
+        Gets all `Comment` upvoted by one user
+      tags:
+        - Comment
+      parameters:
+        -
+          name: id
+          in: path
+          description: ID of the user
+          required: true
+          type: number
+          format: int
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: ArrayOfComment
+            type: array
+            items:
+              $ref: "#/definitions/Comment"
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Comment not found
+          
+  /comments/downvote/:id:
+    put:
+      description: |
+        A specific `User` downvotes a specific `Comment`.
+        
+      tags:
+        - Comment
+      parameters:
+        -
+          name: user_id
+          in: query
+          description:  Unique identifier representing the user that make the downvotation
+          required: true
+          type: number
+          format: int
+        - 
+          name: comment_id
+          in: query
+          description: Unique identifier representing the comment that receives the downvotation
+          required: true
+          type: number
+          format: int
+          
+      responses:
+        '201':
+          description: Downvote created
+        '400':
+          description: Parameters not allowed
+        '401':
+          description: Unauthorized user
+        '404':
+          description: User or Comment not found
+        '409':
+          description: The user has already voted this comment
+          
+  /comments/vote/:id:
+    put:
+      description: |
+        A specific `User` upvotes a specific `Comment`.
+      tags:
+        - Comment
+      parameters:
+        -
+          name: user_id
+          in: query
+          description:  Unique identifier representing the user that make the upvotation
+          required: true
+          type: number
+          format: int
+        - 
+          name: comment_id
+          in: query
+          description: Unique identifier representing the comment that receives the upvotation
+          required: false
+          type: number
+          format: int
+          
+      responses:
+        '201':
+          description: Upvote created
+        '400':
+          description: Parameters not allowed
+        '401':
+          description: Unauthorized user
+        '404':
+          description: User or Comment not found
+        '409':
+          description: The user has already voted this comment
+          
+  /comments/edit/:id:
+    put:
+      description: |
+        `User` update a specific `Comment` created by himself.
+      tags:
+        - Comment
+      parameters:
+        -
+          name: user_id
+          in: query
+          description:  Unique identifier representing the user that make the update
+          required: true
+          type: number
+          format: int
+        - 
+          name: comment_id
+          in: query
+          description: Unique identifier representing the comment that receives the update
+          required: true
+          type: number
+          format: int
+          
+      responses:
+        '201':
+          description: Update succesful
+          schema:
+            $ref: "#/definitions/Comment"
+        '400':
+          description: Parameters not allowed
+        '401':
+          description: Unauthorized user
+        '404':
+          description: User or Comment not found
+          
+          
+  /replies:
+    get:
+      description: |
+        Gets all the `Reply` objects.
+      tags:
+        - Reply
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: ArrayOfReplies
+            type: array
+            items:
+              $ref: "#/definitions/Reply"
+        '400':
+          description: Type not allowed
+        '401':
+          description: Unauthorized user
+          
+  
+  /replies/{id}:
+    get:
+      description: |
+        Gets a specific `Reply` by **id**
+      tags:
+        - Reply
+      parameters:
+        -
+          name: id
+          in: path
+          description: ID of the reply
+          required: true
+          type: number
+          format: int
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: "#/definitions/Reply"
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Reply not found
+    delete:
+      description: |
+        Deletes a specific `Reply` by **id**
+      tags:
+        - Reply
+      parameters:
+        -
+          name: id
+          in: path
+          description: ID of the reply
+          required: true
+          type: number
+          format: int
+  
+      responses:
+        '200':
+          description: Successful response
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Reply not found
+  /replies/comments/:id:
+    get:
+      description: |
+        Get all `Reply` of one `Comment`
+        
+      tags:
+        - Reply
+      parameters:
+        - 
+          name: comment_id
+          in: query
+          description: Unique identifier representing the comment.
+          required: true
+          type: number
+          format: int
+          
+      responses:
+        '200':
+          description: Succesful response
+        '400':
+          description: Parameter not allowed
+        '404':
+          description: Comment not found
+    post:
+      description: |
+        Creates a new `Reply` with the information of the `body` param
+      tags:
+        - Reply
+      parameters:
+        -
+          name: body
+          in: body
+          required: true
+          description: Reply information
+          schema:
+            $ref: "#/definitions/NewReply"
+        -
+          name: comment_id
+          in: query
+          description: Unique identifier representing the comment.
+          required: true
+          type: number
+          format: int
+      responses:
+        '201':
+          description: Reply created
+          schema:
+            $ref: "#/definitions/Reply"
+        '400':
+          description: Bad request. Url or text must be set
+        '401':
+          description: Unauthorized user
+        '409':
+          description: Conflict on creating reply. It can't have text and url
+      
+  /replies/users/:id:
+    get:
+      description: |
+        Get all `Reply` posted by one `User`
+        
+      tags:
+        - Reply
+      parameters:
+        - 
+          name: user_id
+          in: query
+          description: Unique identifier representing the user.
+          required: true
+          type: number
+          format: int
+          
+      responses:
+        '200':
+          description: Succesful response
+        '400':
+          description: Parameter not allowed
+        '404':
+          description: Reply not found
+  /replies/upvoted/users/:id:
+    get:
+      description: |
+        Gets all `Reply` upvoted by one user
+      tags:
+        - Reply
+      parameters:
+        -
+          name: id
+          in: path
+          description: ID of the user
+          required: true
+          type: number
+          format: int
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: ArrayOfReply
+            type: array
+            items:
+              $ref: "#/definitions/Reply"
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Reply not found
+          
+  /replies/downvote/:id:
+    put:
+      description: |
+        A specific `User` downvotes a specific `Reply`.
+        
+      tags:
+        - Reply
+      parameters:
+        -
+          name: user_id
+          in: query
+          description:  Unique identifier representing the user that make the downvotation
+          required: true
+          type: number
+          format: int
+        - 
+          name: reply_id
+          in: query
+          description: Unique identifier representing the reply that receives the downvotation
+          required: true
+          type: number
+          format: int
+          
+      responses:
+        '201':
+          description: Downvote created
+        '400':
+          description: Parameters not allowed
+        '401':
+          description: Unauthorized user
+        '404':
+          description: User or Reply not found
+        '409':
+          description: The user has already voted this reply
+          
+  /replies/vote/:id:
+    put:
+      description: |
+        A specific `User` upvotes a specific `Reply`.
+      tags:
+        - Reply
+      parameters:
+        -
+          name: user_id
+          in: query
+          description:  Unique identifier representing the user that make the upvotation
+          required: true
+          type: number
+          format: int
+        - 
+          name: comment_id
+          in: query
+          description: Unique identifier representing the reply that receives the upvotation
+          required: false
+          type: number
+          format: int
+          
+      responses:
+        '201':
+          description: Upvote created
+        '400':
+          description: Parameters not allowed
+        '401':
+          description: Unauthorized user
+        '404':
+          description: User or Reply not found
+        '409':
+          description: The user has already voted this reply
+          
+  /replies/edit/:id:
+    put:
+      description: |
+        `User` update a specific `Reply` created by himself.
+      tags:
+        - Reply
+      parameters:
+        -
+          name: user_id
+          in: query
+          description:  Unique identifier representing the user that make the update
+          required: true
+          type: number
+          format: int
+        - 
+          name: reply_id
+          in: query
+          description: Unique identifier representing the reply that receives the update
+          required: true
+          type: number
+          format: int
+          
+      responses:
+        '201':
+          description: Update succesful
+          schema:
+            $ref: "#/definitions/Comment"
+        '400':
+          description: Parameters not allowed
+        '401':
+          description: Unauthorized user
+        '404':
+          description: User or Reply not found
+  
+  /users:
+    post:
+      description: |
+        Create a specific `User`
+      tags:
+        - User
+      parameters:
+        -
+          name: name
+          in: query
+          description: Name of the user
+          required: true
+          type: string
+        -
+          name: email
+          in: query
+          description: Email of the user
+          required: true
+          type: string
+        -
+          name: password
+          in: query
+          description: Password of the user
+          required: true
+          type: string
+        -
+          name: about
+          in: query
+          description: About of the user
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: "#/definitions/User"
+        '400':
+          description: Parameters not allowed
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Email not found
+  /users/:id:
+    get:
+      description: |
+        Gets the `User` profile
+      tags:
+        - User
+      parameters:
+        -
+          name: id
+          in: path
+          description: ID of the user
+          required: true
+          type: number
+          format: int
+      responses:
+        '200':
+          description: Successful respoonse
+          schema:
+            $ref: "#/definitions/User"
+        '401':
+          description: Unauthorized user
+        '404':
+          description: User not found
+    put:
+      description: |
+        Modifies the `User` about field
+      tags:
+        - User
+      parameters:
+        -
+          name: id
+          in: path
+          description: ID of the user
+          required: true
+          type: number
+          format: int
+        -
+          name: body
+          in: body
+          description: Text of the about area
+          required: true
+          schema:
+            $ref: "#/definitions/UpdatedUser"
+            
+      responses:
+        '200':
+          description: Successful respoonse
+          schema:
+            $ref: "#/definitions/User"
+        '400':
+          description: Parameters not allowed
+        '401':
+          description: Unauthorized user
+        '404':
+          description: User not found
+
+definitions:
+  Contribucion:
+    type: object
+    properties:
+      id:
+        type: number
+        format: integer
+        description: Unique identifier representing specific contribucion
+      title:
+        type: string
+        description: The title of the contribucion
+      text:
+        type: string
+        description: Main body of the contribucion, empty if the type is url.
+      url:
+        type: string
+        description: The URL of a url contribucion, empty if the type is ask.
+      created_at:
+        type: string
+        format: date
+        description: Date when the contribucion was created.
+      updated_at:
+        type: string
+        format: date
+        description: Date when the contribucion was created.
+      tipus:
+        type: string
+        description: Type of the contribucion.
+      user_id:
+        type: number
+        format: integer
+        description: User_id of the creator of the contribucion.
+      points: 
+        type: number
+        format: int
+        description: The points of the contribucion.
+      cached_votes_total:
+        type: number
+        format: integer
+        description: The total votes of the contribucion.
+      cached_votes_up:
+        type: number
+        format: integer
+        description: The total upvotes of the contribucion.
+      cached_votes_down:
+        type: number
+        format: integer
+        description: The total downvotes of the contribucion.
+    example:
+      id: 1
+      title: "Example"
+      text: "This is an ask"
+      url: ""
+      created_at: "2020-05-05T18:00:00"
+      updated_at: "2020-05-05T20:30:00"
+      tipus: "ask"
+      user_id: 13
+      points: 4
+      cached_votes_total: 10
+      cached_votes_up: 7
+      cached_votes_down: 3
+        
+  NewContribucion:
+    type: object
+    properties:
+      title:
+        type: string
+        description: The title of the contribucion
+      url:
+        type: string
+        description: Text containing a url
+      text:
+        type: string
+        description: Text containing the body of the ask
+      user_id:
+        type: number
+        format: int
+        description: Unique identifier representing the user who mades the contribucion
+    example:
+      -
+        title: "Example"
+        url: ""
+        text: "This is an ask"
+        user_id: 13
+  
+  Comment:
+    type: object
+    properties:
+      id:
+        type: number
+        format: int
+        description: Unique identifier representing specific comment
+      user_id:
+        type: number
+        format: integer
+        description: User_id of the creator of the comment.
+      contribucion_id:
+        type: number
+        format: integer
+        description: Contribucion_id of the contribucion of the comment.
+      content:
+        type: string
+        description: Content of the comment.
+      created_at:
+        type: string
+        format: date
+        description: Date when the comment was created
+      updated_at:
+        type: string
+        format: date
+        description: Date when the comment was updated
+      points: 
+        type: number
+        format: int
+        description: The points of the comment.
+      cached_votes_total:
+        type: number
+        format: integer
+        description: The total votes of the comment.
+      cached_votes_up:
+        type: number
+        format: integer
+        description: The total upvotes of the comment.
+      cached_votes_down:
+        type: number
+        format: integer
+        description: The total downvotes of the comment.
+    example:
+      id: 1
+      contribucion_id: 1
+      user_id: 13
+      content: "This is a comment"
+      created_at: "2020-05-05T18:00:00"
+      updated_at: ""
+      points: 4
+      cached_votes_total: 10
+      cached_votes_up: 7
+      cached_votes_down: 3
+      
+      
+  NewComment:
+    type: object
+    properties:
+      content:
+        type: string
+    example:
+      content: "This is a comment"
+  
+  Reply:
+    type: object
+    properties:
+      id:
+        type: number
+        format: int
+        description: Unique identifier representing specific reply
+      user_id:
+        type: number
+        format: integer
+        description: User_id of the creator of the reply.
+      comment_id:
+        type: number
+        format: integer
+        description: Comment_id of the comment of the reply.
+      content:
+        type: string
+        description: Content of the reply.
+      created_at:
+        type: string
+        format: date
+        description: Date when the reply was created.
+      updated_at:
+        type: string
+        format: date
+        description: Date when the reply was updated.
+      points: 
+        type: number
+        format: int
+        description: The points of the reply.
+      cached_votes_total:
+        type: number
+        format: integer
+        description: The total votes of the reply.
+      cached_votes_up:
+        type: number
+        format: integer
+        description: The total upvotes of the reply.
+      cached_votes_down:
+        type: number
+        format: integer
+        description: The total downvotes of the reply.
+    example:
+      id: 1
+      comment_id: 1
+      user_id: 13
+      content: "This is a reply"
+      created_at: "2020-05-05T18:00:00"
+      updated_at: ""
+      points: 4
+      cached_votes_total: 10
+      cached_votes_up: 7
+      cached_votes_down: 3
+  
+  NewReply:
+    type: object
+    properties:
+      content:
+        type: string
+    example:
+      content: "This is a reply"
+  
+  User:
+    type: object
+    properties:
+      id:
+        type: number
+        format: int
+        description: Unique identifier representing specific user.
+      apiKey:
+        type: number
+        format: int
+        description: Unique identifier representing specific session.
+      name:
+        type: string
+        description: User's name and surname.
+      about:
+        type: string
+        description: Little description about the user.
+      created_at:
+        type: string
+        format: date
+        description: Date when the user was created.
+      updated_at:
+        type: string
+        format: date
+        description: Date when the user was updated.
+      karma:
+        type: number
+        format: int
+        description: The sum of all the upvotes of the user.
+      email:
+        type: string
+        description: The facebook email of the user.
+    example:
+      id: 1
+      name: "Oriol Catalán"
+      about: "Student at FIB-UPC"
+      created_at: "2020-04-05T18:00:00"
+      updated_at: "2020-05-05T18:00:00"
+      karma: 4
+      email: "oriol.catalan.fernandez@est.fib.upc.edu"
+  
+  UpdatedUser:
+    type: object
+    properties:
+      about:
+        type: string
+    example:
+      text: "Student at FIB-UPC"
+      
+        
+        
+        
