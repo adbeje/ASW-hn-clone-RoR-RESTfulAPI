@@ -10,5 +10,5 @@ Components del grup:
 
 * Adrià Ventura
 
-Deployment (herokuapp): https://glacial-island-05388.herokuapp.com
+Deployment (herokuapp): https://salty-inlet-98667.herokuapp.com/
 
