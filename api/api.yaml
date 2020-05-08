@@ -81,6 +81,7 @@ paths:
           in: query
           description: url of the contribucion
           required: false
+          allowEmptyValue: true
           type: string
         -
           name: text
