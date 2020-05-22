@@ -7,6 +7,13 @@ class Api::UsersController < Api::ApiController
     end
   end
   
+  def showbyemail
+    @users = User.find_by_email(params[:email])
+    respond_to do |format|
+      format.json { render json: @users}
+    end
+  end
+  
   
   def create
     @user = User.new(user_params)

@@ -8,28 +8,28 @@ class Api::ContribucionsController < Api::ApiController
   end
   
   def index
-    @contribucions = Contribucion.all
+    @contribucions = Contribucion.all.order(cached_votes_up: :desc)
     respond_to do |format|
       format.json { render json: @contribucions}
     end
   end
   
   def index_ask
-    @contribucions = Contribucion.where(tipus:'ask')
+    @contribucions = Contribucion.where(tipus:'ask').order("created_at DESC")
     respond_to do |format|
       format.json { render json: @contribucions}
     end
   end
   
   def index_ordered
-    @contribucions = Contribucion.where(tipus:'url')
+    @contribucions = Contribucion.where(tipus:'url').order("created_at DESC")
     respond_to do |format|
       format.json { render json: @contribucions}
     end
   end
   
   def fromuser
-    @contribucions = Contribucion.where(user_id:params[:id])
+    @contribucions = Contribucion.where(user_id: params[:id])
     respond_to do |format|
       format.json { render json: @contribucions}
     end

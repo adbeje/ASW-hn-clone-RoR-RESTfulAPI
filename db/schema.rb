@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_06_092515) do
+ActiveRecord::Schema.define(version: 2020_05_21_102647) do
 
   create_table "comments", force: :cascade do |t|
     t.integer "user_id"
@@ -19,6 +19,12 @@ ActiveRecord::Schema.define(version: 2020_05_06_092515) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "contribucion_id"
     t.text "title"
+    t.integer "cached_votes_total", default: 0
+    t.integer "cached_votes_up", default: 0
+    t.integer "cached_votes_down", default: 0
+    t.index ["cached_votes_down"], name: "index_comments_on_cached_votes_down"
+    t.index ["cached_votes_total"], name: "index_comments_on_cached_votes_total"
+    t.index ["cached_votes_up"], name: "index_comments_on_cached_votes_up"
     t.index ["contribucion_id"], name: "index_comments_on_contribucion_id"
     t.index ["title"], name: "index_comments_on_title"
     t.index ["user_id"], name: "index_comments_on_user_id"
@@ -48,6 +54,12 @@ ActiveRecord::Schema.define(version: 2020_05_06_092515) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "user_id"
     t.integer "comment_id"
+    t.integer "cached_votes_total", default: 0
+    t.integer "cached_votes_up", default: 0
+    t.integer "cached_votes_down", default: 0
+    t.index ["cached_votes_down"], name: "index_replies_on_cached_votes_down"
+    t.index ["cached_votes_total"], name: "index_replies_on_cached_votes_total"
+    t.index ["cached_votes_up"], name: "index_replies_on_cached_votes_up"
     t.index ["comment_id"], name: "index_replies_on_comment_id"
     t.index ["user_id"], name: "index_replies_on_user_id"
   end

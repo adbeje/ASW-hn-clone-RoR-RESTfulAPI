@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     delete '/contribucions/:id' => 'api/contribucions#delete'
 
     get '/users/:id' => 'api/users#show'
+    post '/users/email/' => 'api/users#showbyemail'
     post '/users/' =>'api/users#create'
     put '/users/:id' => 'api/users#edit'
 
