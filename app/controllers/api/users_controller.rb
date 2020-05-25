@@ -18,6 +18,7 @@ class Api::UsersController < Api::ApiController
   def create
     @user = User.new(user_params)
     @user.karma = 0
+    @user.password = Devise.friendly_token[0,20]
     respond_to do |format|
       if @user.save
         @apiKey = (@user.id).to_s + "_" + SecureRandom.urlsafe_base64
@@ -31,7 +32,7 @@ class Api::UsersController < Api::ApiController
   end
   
   def user_params
-    params.permit(:name, :email, :password, :about)
+    params.permit(:name, :email, :about)
   end
   
   def edit
@@ -54,7 +55,7 @@ class Api::UsersController < Api::ApiController
   end
   
   def user_params_edit
-    params.permit(:name, :email, :password, :password_confirmation, :about)
+    params.permit(:name, :email, :about)
   end
 
 end
