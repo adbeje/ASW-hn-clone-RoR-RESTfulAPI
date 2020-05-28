@@ -26,7 +26,8 @@ class Api::UsersController < Api::ApiController
         @user.save
         format.json { render json: {id: @user.id, email: @user.email, apiKey: @user.apiKey}, status: :created}
       else
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        @user = User.find_by_email(params[:email])
+        format.json { render json: {id: @user.id, email: @user.email, apiKey: @user.apiKey}, status: :created}
       end
     end
   end
