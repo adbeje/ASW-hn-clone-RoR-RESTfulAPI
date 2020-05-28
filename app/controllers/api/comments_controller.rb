@@ -8,7 +8,7 @@ class Api::CommentsController < Api::ApiController
   end
     
   def showall
-      @comments = Comment.all
+      @comments = Comment.all.order("created_at DESC")
       respond_to do |format|
         format.json { render json: @comments}
       end
