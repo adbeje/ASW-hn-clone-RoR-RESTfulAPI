@@ -24,10 +24,10 @@ class Api::UsersController < Api::ApiController
         @apiKey = (@user.id).to_s + "_" + SecureRandom.urlsafe_base64
         @user.apiKey = @apiKey
         @user.save
-        format.json { render json: {id: @user.id, email: @user.email, apiKey: @user.apiKey}, status: :created}
+        format.json { render json: {id: @user.id, name: @user.name, email: @user.email, apiKey: @user.apiKey}, status: :created}
       else
         @user = User.find_by_email(params[:email])
-        format.json { render json: {id: @user.id, email: @user.email, apiKey: @user.apiKey}, status: :created}
+        format.json { render json: {id: @user.id, name: @user.name, email: @user.email, apiKey: @user.apiKey}, status: :created}
       end
     end
   end
