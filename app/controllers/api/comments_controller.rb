@@ -22,7 +22,7 @@ class Api::CommentsController < Api::ApiController
   end
   
   def fromcontribucion
-      @comments = Comment.where(contribucion_id:params[:id])
+      @comments = Comment.where(contribucion_id:params[:id]).order("created_at DESC")
       respond_to do |format|
         format.json { render json: @comments}
       end

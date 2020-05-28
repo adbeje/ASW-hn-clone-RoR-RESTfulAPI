@@ -22,7 +22,7 @@ def fromuser
 end
 
 def fromcomment
-    @replies = Reply.where(comment_id:params[:id])
+    @replies = Reply.where(comment_id:params[:id]).order("created_at DESC")
     respond_to do |format|
       format.json { render json: @replies}
     end
